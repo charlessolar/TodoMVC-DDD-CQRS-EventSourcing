@@ -1,15 +1,38 @@
-﻿FROM microsoft/aspnetcore:2.0
+﻿FROM microsoft/aspnetcore-build:2.0 AS build
+
 MAINTAINER charlessolar@gmail.com
 
-ARG CONT_IMG_VER
-ENV CONT_IMG_VER ${CONT_IMG_VER:-v0.0.1}
+WORKDIR /src
 
-LABEL Description="Presentation" Vendor="Pulse Inc" Version=${CONT_IMG_VER}
+# only copy the projects so restore layer isnt re-done for source changes
+COPY *.sln .
+COPY Domain/*.csproj ./Domain/
+COPY Application/*.csproj ./Application/
+COPY Presentation/*.csproj ./Presentation/
+COPY Infrastructure/*.csproj ./Infrastructure/
+COPY Language/*.csproj ./Language/
 
-WORKDIR /app
-COPY . ./
+RUN dotnet restore
 
-ENV ASPNETCORE_URLS http://*:80
+COPY . .
+WORKDIR /src/Presentation
+RUN dotnet build --no-restore -c Release -o /app
+
+#FROM build AS testrunner
+#WORKDIR /src/tests
+#ENTRYPOINT ["dotnet", "test", "--logger:trx"]
+
+#FROM build AS test
+#WORKDIR /src/tests
+#RUN dotnet test
+
+FROM build AS publish
+WORKDIR /src/Presentation
+RUN dotnet publish --no-restore -c Release -o /app
+
+
+FROM microsoft/aspnetcore:2.0 AS runtime
 EXPOSE 80
-
+WORKDIR /app
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Presentation.dll"]

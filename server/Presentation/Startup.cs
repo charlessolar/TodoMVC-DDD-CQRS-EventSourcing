@@ -152,21 +152,11 @@ namespace Example
             // Todo: see: http://docs.servicestack.net/releases/v4.5.10#vulnerability-with-object-properties
             JsConfig.AllowRuntimeType = _ => true;
 
-            SetConfig(new HostConfig { DebugMode = true, ApiVersion = "1", WebHostUrl = "http://127.0.0.1:8080" });
+            SetConfig(new HostConfig { DebugMode = true, ApiVersion = "1" });
 
             container.Adapter = new StructureMapContainerAdapter(_container);
             
-            Plugins.Add(new SessionFeature());
             Plugins.Add(new OpenApiFeature());
-            //Plugins.Add(new NativeTypesFeature());
-
-            // Todo
-            //Plugins.Add(new RequestLogsFeature
-            //{
-            //    RequestLogger = container.Exists<IRedisClientsManager>() 
-            //        ? new RedisNLogRequestLogger(container.Resolve<IRedisClientsManager>(), Logger, capacity: 1000) 
-            //        : (IRequestLogger)new InMemoryNLogRequestLogger(Logger, capacity: 1000)
-            //});
 
             Plugins.Add(new PostmanFeature
             {
@@ -183,9 +173,6 @@ namespace Example
             ));
 
             Plugins.Add(new ValidationFeature());
-            // Todo
-            //Plugins.Add(new Profiling.MetricsFeature());
-            Plugins.Add(new ServerEventsFeature());
             
             var nativeTypes = this.GetPlugin<NativeTypesFeature>();
             nativeTypes.MetadataTypesConfig.GlobalNamespace = "DTOs";

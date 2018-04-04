@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  domain:
+    image: todomvc/domain:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Domain/Dockerfile
+    depends_on:
+      - rabbitmq
+      - eventstore
+  application:
+    image: todomvc/application:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Application/Dockerfile
+    depends_on:
+      - rabbitmq
+      - eventstore
+  presentation:
+    image: todomvc/presentation:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Presentation/Dockerfile
+    depends_on:
+      - rabbitmq
+  
+  # windows image
+  #rabbitmq:
+  #  image: spring2/rabbitmq
+  #  ports:
+  #    - "15672:15672"
+  #    - "5672:5672"
+
+  # linux images
+  rabbitmq:
+    image: rabbitmq:3-management-alpine1
+  eventstore:
+    image: eventstore/eventstore
