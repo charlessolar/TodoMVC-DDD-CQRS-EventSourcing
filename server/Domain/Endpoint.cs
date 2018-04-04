@@ -124,10 +124,6 @@ namespace Example
             var user = Configuration["EventStoreUserName"] ?? "admin";
             var password = Configuration["EVentStorePassword"] ?? "changeit";
 
-            if (!IPAddress.TryParse(host, out var endpoint))
-                throw new ArgumentException($"Could not parse eventstore IP {host}");
-
-
             var endpoints = new[] { GetIPEndPointFromHostName(host, 2113) };
             var cred = new UserCredentials(user, password);
             var settings = EventStore.ClientAPI.ConnectionSettings.Create()
