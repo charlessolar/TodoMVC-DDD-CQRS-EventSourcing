@@ -28,8 +28,10 @@ namespace Example
         {
             Log.Fatal("<{EventId:l}> Unhandled exception {Exception}", "Unhandled", e.ExceptionObject);
             Console.WriteLine("");
+#if DEBUG
             Console.WriteLine("FATAL ERROR - Press return to close...");
             Console.ReadLine();
+#endif
             Environment.Exit(1);
         }
 
