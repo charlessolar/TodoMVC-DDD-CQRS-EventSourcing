@@ -38,6 +38,7 @@ namespace Example
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(builder => builder.AddEnvironmentVariables("TODOMVC_"))
                 .UseStartup<Startup>()
                 .Build();
     }
@@ -111,7 +112,12 @@ namespace Example
         }
         private async Task<IEndpointInstance> InitBus()
         {
-            var config = new EndpointConfiguration("domain");
+            var config = new EndpointConfiguration("presentation");
+
+            // Configure RabbitMQ transport
+            var transport = config.UseTransport<RabbitMQTransport>();
+            transport.UseConventionalRoutingTopology();
+            transport.ConnectionString(GetRabbitConnectionString());
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
@@ -128,6 +134,17 @@ namespace Example
             ).ConfigureAwait(false);
 
             return Aggregates.Bus.Instance;
+        }
+        private string GetRabbitConnectionString()
+        {
+            var host = AppSettings.Get<string>("RabbitConnection");
+            var user = AppSettings.Get<string>("RabbitUserName", "");
+            var password = AppSettings.Get<string>("RabbitPassword", "");
+
+            if (string.IsNullOrEmpty(user))
+                return $"host={host}";
+
+            return $"host={host};username={user};password={password};";
         }
 
         public override void Configure(Funq.Container container)

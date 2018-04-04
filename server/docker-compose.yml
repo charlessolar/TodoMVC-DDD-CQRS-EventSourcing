@@ -35,5 +35,11 @@ services:
   # linux images
   rabbitmq:
     image: rabbitmq:3-management-alpine1
+    ports:
+      - "15672:15672"
+      - "5672:5672"
   eventstore:
     image: eventstore/eventstore
+    ports:
+      - "1113:1113"
+      - "2113:2113"

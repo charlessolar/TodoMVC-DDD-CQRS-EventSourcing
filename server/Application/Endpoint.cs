@@ -3,6 +3,7 @@ using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using FluentValidation;
 using Infrastructure.Validation;
+using Microsoft.Extensions.Configuration;
 using NServiceBus;
 using NServiceBus.Serilog;
 using Serilog;
@@ -17,6 +18,8 @@ namespace Example
 {
     internal class Program
     {
+        private static IConfiguration Configuration { get; set; }
+
         static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
         private static IContainer _container;
         private static IEndpointInstance _bus;
@@ -33,6 +36,11 @@ namespace Example
 
         private static void Main(string[] args)
         {
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddEnvironmentVariables("TODOMVC_");
+
+            Configuration = configurationBuilder.Build();
+
             Console.Title = "Application";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Warning()
@@ -72,25 +80,17 @@ namespace Example
         {
             var config = new EndpointConfiguration("application");
 
+            // Configure RabbitMQ transport
+            var transport = config.UseTransport<RabbitMQTransport>();
+            transport.UseConventionalRoutingTopology();
+            transport.ConnectionString(GetRabbitConnectionString());
+
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
 
             config.Pipeline.Remove("LogErrorOnInvalidLicense");
 
-            var endpoints = new[] { new IPEndPoint(IPAddress.Loopback, 2113) };
-            var cred = new UserCredentials("admin", "changeit");
-            var settings = EventStore.ClientAPI.ConnectionSettings.Create()
-                .KeepReconnecting()
-                .KeepRetrying()
-                .SetGossipSeedEndPoints(endpoints)
-                .SetClusterGossipPort(2113)
-                .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
-                .SetGossipTimeout(TimeSpan.FromMinutes(5))
-                .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
-                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(1))
-                .SetDefaultUserCredentials(cred);
-
-            var client = EventStoreConnection.Create(settings, endpoints.First(), "Application");
+            var client = GetEventStore();
 
             await client.ConnectAsync().ConfigureAwait(false);
 
@@ -104,6 +104,42 @@ namespace Example
             ).ConfigureAwait(false);
 
             return Aggregates.Bus.Instance;
+        }
+        private static string GetRabbitConnectionString()
+        {
+            var host = Configuration["RabbitConnection"];
+            var user = Configuration["RabbitUserName"];
+            var password = Configuration["RabbitPassword"];
+
+            if (string.IsNullOrEmpty(user))
+                return $"host={host}";
+
+            return $"host={host};username={user};password={password};";
+        }
+        private static IEventStoreConnection GetEventStore()
+        {
+            var host = Configuration["EventStoreConnection"];
+            var user = Configuration["EventStoreUserName"] ?? "admin";
+            var password = Configuration["EVentStorePassword"] ?? "changeit";
+
+            if (!IPAddress.TryParse(host, out var endpoint))
+                throw new ArgumentException($"Could not parse eventstore IP {host}");
+
+
+            var endpoints = new[] { new IPEndPoint(endpoint, 2113) };
+            var cred = new UserCredentials(user, password);
+            var settings = EventStore.ClientAPI.ConnectionSettings.Create()
+                .KeepReconnecting()
+                .KeepRetrying()
+                .SetGossipSeedEndPoints(endpoints)
+                .SetClusterGossipPort(2113)
+                .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
+                .SetGossipTimeout(TimeSpan.FromMinutes(5))
+                .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
+                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(1))
+                .SetDefaultUserCredentials(cred);
+
+            return EventStoreConnection.Create(settings, endpoints.First(), "Application");
         }
     }
 }
