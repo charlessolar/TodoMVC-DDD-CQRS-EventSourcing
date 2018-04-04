@@ -137,7 +137,7 @@ namespace Example
                 .KeepReconnecting()
                 .KeepRetrying()
                 .SetGossipSeedEndPoints(endpoints)
-                .SetClusterGossipPort(2113)
+                .SetClusterGossipPort(1113)
                 .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
                 .SetGossipTimeout(TimeSpan.FromMinutes(5))
                 .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
