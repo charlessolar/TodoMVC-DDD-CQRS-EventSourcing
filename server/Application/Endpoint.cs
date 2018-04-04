@@ -129,13 +129,13 @@ namespace Example
             if (string.IsNullOrEmpty(password))
                 password = "changeit";
 
-            var endpoints = new[] { GetIPEndPointFromHostName(host, 2113) };
+            var endpoints = new[] { GetIPEndPointFromHostName(host, 1113) };
             var cred = new UserCredentials(user, password);
             var settings = EventStore.ClientAPI.ConnectionSettings.Create()
                 .KeepReconnecting()
                 .KeepRetrying()
                 .SetGossipSeedEndPoints(endpoints)
-                .SetClusterGossipPort(1113)
+                .SetClusterGossipPort(2113)
                 .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
                 .SetGossipTimeout(TimeSpan.FromMinutes(5))
                 .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))

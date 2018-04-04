@@ -131,20 +131,20 @@ namespace Example
             if (string.IsNullOrEmpty(password))
                 password = "changeit";
 
-            var endpoints = new[] { GetIPEndPointFromHostName(host, 2113) };
+            var endpoint = GetIPEndPointFromHostName(host, 1113);
             var cred = new UserCredentials(user, password);
             var settings = EventStore.ClientAPI.ConnectionSettings.Create()
                 .KeepReconnecting()
                 .KeepRetrying()
-                .SetGossipSeedEndPoints(endpoints)
-                .SetClusterGossipPort(1113)
+                .SetGossipSeedEndPoints(endpoint)
+                .SetClusterGossipPort(2113)
                 .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
                 .SetGossipTimeout(TimeSpan.FromMinutes(5))
                 .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
                 .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(1))
                 .SetDefaultUserCredentials(cred);
 
-            return EventStoreConnection.Create(settings, endpoints.First(), "Domain");
+            return EventStoreConnection.Create(settings, endpoint, "Domain");
         }
         // https://stackoverflow.com/a/2101787/223547
         public static IPEndPoint GetIPEndPointFromHostName(string hostName, int port, bool throwIfMoreThanOneIP = false)
