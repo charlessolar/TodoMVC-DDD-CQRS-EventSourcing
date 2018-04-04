@@ -9,6 +9,7 @@ services:
     depends_on:
       - rabbitmq
       - eventstore
+    restart: always
   application:
     image: todomvc/application:${TAG:-latest}
     build:
@@ -17,6 +18,7 @@ services:
     depends_on:
       - rabbitmq
       - eventstore
+    restart: always
   presentation:
     image: todomvc/presentation:${TAG:-latest}
     build:
@@ -24,6 +26,7 @@ services:
       dockerfile: Presentation/Dockerfile
     depends_on:
       - rabbitmq
+    restart: always
   
   # windows image
   #rabbitmq:

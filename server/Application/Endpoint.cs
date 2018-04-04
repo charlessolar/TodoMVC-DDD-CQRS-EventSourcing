@@ -119,8 +119,13 @@ namespace Example
         private static IEventStoreConnection GetEventStore()
         {
             var host = Configuration["EventStoreConnection"];
-            var user = Configuration["EventStoreUserName"] ?? "admin";
-            var password = Configuration["EVentStorePassword"] ?? "changeit";
+            var user = Configuration["EventStoreUserName"];
+            var password = Configuration["EventStorePassword"];
+
+            if (string.IsNullOrEmpty(user))
+                user = "admin";
+            if (string.IsNullOrEmpty(password))
+                password = "changeit";
 
             var endpoints = new[] { GetIPEndPointFromHostName(host, 2113) };
             var cred = new UserCredentials(user, password);
