@@ -63,7 +63,7 @@ namespace Infrastructure.Extensions
             options.SetDestination("domain");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
-            var response = bus.Request<T>(message, options);
+            var response = bus.Request<Aggregates.Messages.IMessage>(message, options);
 
             await Task.WhenAny(
                     Task.Delay(TenSeconds), response)
@@ -80,7 +80,7 @@ namespace Infrastructure.Extensions
             options.SetDestination("application");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
-            var response = bus.Request<T>(message, options);
+            var response = bus.Request<PagedReply<TResponse>>(message, options);
 
             await Task.WhenAny(
                 Task.Delay(TenSeconds), response)
