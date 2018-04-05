@@ -202,3 +202,12 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Typescript-related generated files
+src/**/*.js
+src/**/*.js.map
+test/**/*.js
+test/**/*.js.map
+*.awcache
+
+src/Web/node_modules
