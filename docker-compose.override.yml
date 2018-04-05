@@ -28,4 +28,4 @@ services:
       - TODOMVC_RabbitPassword=${RABBIT_PASSWORD}
   frontend:
     environment:
-      - API_SERVER=${PRESENTATION_SERVER:-presentation}
+      - API_SERVER=${PRESENTATION_SERVER:-http://presentation:8080}

@@ -27,7 +27,7 @@ services:
     depends_on:
       - rabbitmq
     ports:
-      - "80:8080"
+      - "8080:80"
     restart: always
   frontend:
     image: todomvc/frontend:${TAG:-latest}
@@ -36,6 +36,8 @@ services:
       dockerfile: src/Web/Dockerfile
     depends_on:
       - presentation
+    ports:
+      - "80:80"
   
   # windows image
   #rabbitmq:

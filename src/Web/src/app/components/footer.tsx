@@ -23,7 +23,7 @@ export default function Footer() {
     return (
       <FooterView>
         <div>
-          SpeedETab © {year} {version}
+          TodoMVC © {year} {version}
         </div>
       </FooterView>
     );
