@@ -5,17 +5,17 @@ MAINTAINER charlessolar@gmail.com
 WORKDIR /src
 
 # only copy the projects so restore layer isnt re-done for source changes
-COPY *.sln .
-COPY Domain/*.csproj ./Domain/
-COPY Application/*.csproj ./Application/
-COPY Presentation/*.csproj ./Presentation/
-COPY Infrastructure/*.csproj ./Infrastructure/
-COPY Language/*.csproj ./Language/
+COPY src/*.sln ./src/
+COPY src/Domain/*.csproj ./src/Domain/
+COPY src/Application/*.csproj ./src/Application/
+COPY src/Presentation/*.csproj ./src/Presentation/
+COPY src/Infrastructure/*.csproj ./src/Infrastructure/
+COPY src/Language/*.csproj ./src/Language/
 
 RUN dotnet restore
 
 COPY . .
-WORKDIR /src/Domain
+WORKDIR /src/src/Domain
 RUN dotnet build --no-restore -c Release -o /app
 
 #FROM build AS testrunner
@@ -27,7 +27,7 @@ RUN dotnet build --no-restore -c Release -o /app
 #RUN dotnet test
 
 FROM build AS publish
-WORKDIR /src/Domain
+WORKDIR /src/src/Domain
 RUN dotnet publish --no-restore -c Release -o /app
 
 

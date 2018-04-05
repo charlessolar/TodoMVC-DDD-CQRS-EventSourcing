@@ -5,7 +5,7 @@ services:
     image: todomvc/domain:${TAG:-latest}
     build:
       context: .
-      dockerfile: Domain/Dockerfile
+      dockerfile: src/Domain/Dockerfile
     depends_on:
       - rabbitmq
       - eventstore
@@ -14,7 +14,7 @@ services:
     image: todomvc/application:${TAG:-latest}
     build:
       context: .
-      dockerfile: Application/Dockerfile
+      dockerfile: src/Application/Dockerfile
     depends_on:
       - rabbitmq
       - eventstore
@@ -23,7 +23,7 @@ services:
     image: todomvc/presentation:${TAG:-latest}
     build:
       context: .
-      dockerfile: Presentation/Dockerfile
+      dockerfile: src/Presentation/Dockerfile
     depends_on:
       - rabbitmq
     ports:
