@@ -5,7 +5,7 @@ MAINTAINER charlessolar@gmail.com
 WORKDIR /src
 
 # only copy the projects so restore layer isnt re-done for source changes
-COPY src/*.sln .
+COPY *.sln .
 COPY src/Domain/*.csproj ./Domain/
 COPY src/Application/*.csproj ./Application/
 COPY src/Presentation/*.csproj ./Presentation/
