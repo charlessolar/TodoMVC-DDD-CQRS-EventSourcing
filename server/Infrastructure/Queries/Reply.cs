@@ -6,18 +6,18 @@ namespace Infrastructure.Queries
 {
 
     // Used when replying to a query
-    public interface IReply<T> : Aggregates.Messages.IMessage
+    public class Reply<T> : Aggregates.Messages.IMessage
     {
-        string ETag { get; set; }
+        public string ETag { get; set; }
 
-        T Payload { get; set; }
+        public T Payload { get; set; }
     }
-    public interface IPagedReply<T> : Aggregates.Messages.IMessage
+    public class PagedReply<T> : Aggregates.Messages.IMessage
     {
-        long ElapsedMs { get; set; }
+        public long ElapsedMs { get; set; }
 
-        long Total { get; set; }
+        public long Total { get; set; }
 
-        IEnumerable<T> Records { get; set; }
+        public IEnumerable<T> Records { get; set; }
     }
 }

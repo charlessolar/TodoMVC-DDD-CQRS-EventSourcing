@@ -17,19 +17,19 @@ namespace Example
             _bus = bus;
         }
 
-        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.AllTodos request)
+        public Task<PagedReply<Todo.Models.TodoResponse>> Any(Todo.AllTodos request)
         {
             return _bus.Request<Todo.Queries.AllTodos, Todo.Models.TodoResponse>(new Todo.Queries.AllTodos
             {
             });
         }
-        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.ActiveTodos request)
+        public Task<PagedReply<Todo.Models.TodoResponse>> Any(Todo.ActiveTodos request)
         {
             return _bus.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
-        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.CompleteTodos request)
+        public Task<PagedReply<Todo.Models.TodoResponse>> Any(Todo.CompleteTodos request)
         {
             return _bus.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
             {
