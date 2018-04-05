@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@servicestack/client@^1.0.0":
+"@servicestack/client@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@servicestack/client/-/client-1.0.9.tgz#fcd75d4bdce62d52cc1439a3ca85eb360aeaaca6"
   dependencies:
@@ -4306,13 +4306,13 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-ui-icons@^1.0.0-beta.35:
+material-ui-icons@^1.0.0-beta.36:
   version "1.0.0-beta.36"
   resolved "https://registry.yarnpkg.com/material-ui-icons/-/material-ui-icons-1.0.0-beta.36.tgz#86390a61f4c83f718eaba77ccce575834f2cf2a8"
   dependencies:
     recompose "^0.26.0"
 
-material-ui@^1.0.0-beta.33:
+material-ui@^1.0.0-beta.40:
   version "1.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.40.tgz#eaf0a0b264739c2c4d2cfe82fe100338814962bb"
   dependencies:
