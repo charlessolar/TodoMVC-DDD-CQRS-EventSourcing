@@ -19,7 +19,7 @@ namespace Infrastructure.Extensions
 
         public static Task Result<TResponse>(this IMessageHandlerContext context, TResponse payload, string eTag = "") where TResponse : class
         {
-            return context.Reply<Reply<TResponse>>(x =>
+            return context.Reply<Reply>(x =>
             {
                 x.ETag = eTag;
                 x.Payload = payload;
@@ -27,14 +27,14 @@ namespace Infrastructure.Extensions
         }
         public static Task Result<TResponse>(this IMessageHandlerContext context, IEnumerable<TResponse> records, long total, long elapsedMs) where TResponse : class
         {
-            return context.Reply<PagedReply<TResponse>>(x =>
+            return context.Reply<PagedReply>(x =>
             {
                 x.Records = records.ToList();
                 x.Total = total;
                 x.ElapsedMs = elapsedMs;
             });
         }
-        public static PagedReply<TResponse> RequestPaged<TResponse>(this Aggregates.Messages.IMessage message) where TResponse : class
+        public static PagedReply RequestPaged<TResponse>(this Aggregates.Messages.IMessage message) where TResponse : class
         {
             if (message == null || message is Reject)
             {
@@ -51,7 +51,7 @@ namespace Infrastructure.Extensions
                 throw new QueryRejectedException(error.Message);
             }
 
-            var package = (PagedReply<TResponse>)message;
+            var package = (PagedReply)message;
             if (package == null)
                 throw new QueryRejectedException($"Unexpected response type: {message.GetType().FullName}");
 
@@ -74,13 +74,13 @@ namespace Infrastructure.Extensions
 
             response.Result.CommandResponse();
         }
-        public static async Task<PagedReply<TResponse>> Request<T, TResponse>(this IMessageSession bus, T message) where T : Paged where TResponse : class
+        public static async Task<PagedReply> Request<T, TResponse>(this IMessageSession bus, T message) where T : Paged where TResponse : class
         {
             var options = new SendOptions();
             options.SetDestination("application");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
-            var response = bus.Request<PagedReply<TResponse>>(message, options);
+            var response = bus.Request<PagedReply>(message, options);
 
             await Task.WhenAny(
                 Task.Delay(TenSeconds), response)
