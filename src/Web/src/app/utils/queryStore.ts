@@ -85,8 +85,8 @@ export class PagedStore<TPayload extends DTOs.IReturn<DTOs.Paged<TResponse>>, TR
       this.loading = true;
       this.error = null;
       const response = await this._context.rest.get(input);
-      this.data = response.Records;
-      this.total = response.Total;
+      this.data = response.records;
+      this.total = response.total;
       return response;
     } catch (error) {
       this.error = error;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* Options:
-Date: 2018-04-05 14:49:24
+Date: 2018-04-05 20:25:50
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://10.0.0.201
@@ -37,14 +37,21 @@ export module DTOs
         message: string;
     }
 
+    export class Paged<TResponse>
+    {
+        elapsedMs: number;
+        total: number;
+        records: TResponse[];
+    }
+
     /**
     * Todo
     */
     // @Route("/todo/all", "GET")
     // @Api(Description="Todo")
-    export class AllTodos implements IReturn<TodoResponse>
+    export class AllTodos implements IReturn<Paged<TodoResponse>>
     {
-        createResponse() { return new TodoResponse(); }
+        createResponse() { return new Paged<TodoResponse>(); }
         getTypeName() { return "AllTodos"; }
     }
 
@@ -53,9 +60,9 @@ export module DTOs
     */
     // @Route("/todo/active", "GET")
     // @Api(Description="Todo")
-    export class ActiveTodos implements IReturn<TodoResponse>
+    export class ActiveTodos implements IReturn<Paged<TodoResponse>>
     {
-        createResponse() { return new TodoResponse(); }
+        createResponse() { return new Paged<TodoResponse>(); }
         getTypeName() { return "ActiveTodos"; }
     }
 
@@ -64,9 +71,9 @@ export module DTOs
     */
     // @Route("/todo/complete", "GET")
     // @Api(Description="Todo")
-    export class CompleteTodos implements IReturn<TodoResponse>
+    export class CompleteTodos implements IReturn<Paged<TodoResponse>>
     {
-        createResponse() { return new TodoResponse(); }
+        createResponse() { return new Paged<TodoResponse>(); }
         getTypeName() { return "CompleteTodos"; }
     }
 
