@@ -204,11 +204,10 @@ FakesAssemblies/
 *.opt
 
 # Typescript-related generated files
-src/**/*.js
-src/**/*.js.map
-test/**/*.js
-test/**/*.js.map
-*.awcache
+src/Web/src/**/*.js
+src/Web/src/**/*.js.map
+src/Web/test/**/*.js
+src/Web/test/**/*.js.map
+src/Web/*.awcache
 
 src/Web/node_modules
-!package-scripts.js
