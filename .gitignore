@@ -211,3 +211,4 @@ test/**/*.js.map
 *.awcache
 
 src/Web/node_modules
+!package-scripts.js
