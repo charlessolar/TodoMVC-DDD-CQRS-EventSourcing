@@ -26,3 +26,6 @@ services:
       - TODOMVC_RabbitConnection=${RABBIT_SERVER:-rabbitmq}
       - TODOMVC_RabbitUserName=${RABBIT_USERNAME}
       - TODOMVC_RabbitPassword=${RABBIT_PASSWORD}
+  frontend:
+    environment:
+      - API_SERVER=${PRESENTATION_SERVER:-presentation}
