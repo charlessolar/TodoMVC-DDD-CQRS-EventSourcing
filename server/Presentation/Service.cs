@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Extensions;
+using Infrastructure.Queries;
 using NServiceBus;
 using System;
 using System.Collections.Generic;
@@ -16,21 +17,21 @@ namespace Example
             _bus = bus;
         }
 
-        public Task<Todo.Models.TodoResponse> Any(Todo.AllTodos request)
+        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.AllTodos request)
         {
-            return _bus.Request<Todo.Models.TodoResponse>(new Todo.Queries.AllTodos
+            return _bus.Request<Todo.Queries.AllTodos, Todo.Models.TodoResponse>(new Todo.Queries.AllTodos
             {
             });
         }
-        public Task<Todo.Models.TodoResponse> Any(Todo.ActiveTodos request)
+        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.ActiveTodos request)
         {
-            return _bus.Request<Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
+            return _bus.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
-        public Task<Todo.Models.TodoResponse> Any(Todo.CompleteTodos request)
+        public Task<IPagedReply<Todo.Models.TodoResponse>> Any(Todo.CompleteTodos request)
         {
-            return _bus.Request<Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
+            return _bus.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
             {
             });
         }

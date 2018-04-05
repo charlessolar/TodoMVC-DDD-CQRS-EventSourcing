@@ -34,7 +34,7 @@ namespace Infrastructure.Extensions
                 x.ElapsedMs = elapsedMs;
             });
         }
-        public static IPagedReply<TResponse> RequestPaged<TResponse>(this Aggregates.Messages.IMessage message, Paged query = null) where TResponse : class
+        public static IPagedReply<TResponse> RequestPaged<TResponse>(this Aggregates.Messages.IMessage message) where TResponse : class
         {
             if (message == null || message is Reject)
             {
@@ -74,13 +74,13 @@ namespace Infrastructure.Extensions
 
             response.Result.CommandResponse();
         }
-        public static async Task<IPagedReply<TResponse>> Request<T, TResponse>(this IMessageSession bus, T message, Paged query) where T : Paged where TResponse : class
+        public static async Task<IPagedReply<TResponse>> Request<T, TResponse>(this IMessageSession bus, T message) where T : Paged where TResponse : class
         {
             var options = new SendOptions();
             options.SetDestination("application");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
-            var response = bus.Request<Aggregates.Messages.IMessage>(message, options);
+            var response = bus.Request<T>(message, options);
 
             await Task.WhenAny(
                 Task.Delay(TenSeconds), response)
@@ -89,7 +89,7 @@ namespace Infrastructure.Extensions
             if(!response.IsCompleted)
                 throw new CommandTimeoutException("Request timed out");
 
-            return response.Result.RequestPaged<TResponse>(query);
+            return response.Result.RequestPaged<TResponse>();
         }
     }
 }

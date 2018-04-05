@@ -2,7 +2,7 @@
 
 namespace Example.Todo.Queries
 {
-    public class CompleteTodos : Query
+    public class CompleteTodos : Paged
     {
     }
 }
