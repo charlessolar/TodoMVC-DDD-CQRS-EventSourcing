@@ -26,6 +26,8 @@ services:
       dockerfile: Presentation/Dockerfile
     depends_on:
       - rabbitmq
+    ports:
+      - "80:80"
     restart: always
   
   # windows image

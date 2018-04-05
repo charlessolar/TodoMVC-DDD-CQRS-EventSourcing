@@ -98,6 +98,7 @@ namespace Example
 
             _container = new Container(x =>
             {
+                x.For<IMessageSession>().Use(() => Aggregates.Bus.Instance);
                 x.Scan(y =>
                 {
                     y.TheCallingAssembly();
