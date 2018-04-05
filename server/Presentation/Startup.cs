@@ -72,9 +72,9 @@ namespace Example
 
         private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
         {
-            Log.Fatal("<{EventId:l}> Unhandled exception {Exception}", "Unhandled", e.ExceptionObject);
-            Console.WriteLine("");
+            Log.Fatal(e.ExceptionObject as Exception, "<{EventId:l}> Unhandled exception", "Unhandled");
 #if DEBUG
+            Console.WriteLine("");
             Console.WriteLine("FATAL ERROR - Press return to close...");
             Console.ReadLine();
 #endif
