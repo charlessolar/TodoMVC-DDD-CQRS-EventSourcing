@@ -5,12 +5,12 @@ MAINTAINER charlessolar@gmail.com
 WORKDIR /src
 
 # only copy the projects so restore layer isnt re-done for source changes
-COPY src/*.sln ./src/
-COPY src/Domain/*.csproj ./src/Domain/
-COPY src/Application/*.csproj ./src/Application/
-COPY src/Presentation/*.csproj ./src/Presentation/
-COPY src/Infrastructure/*.csproj ./src/Infrastructure/
-COPY src/Language/*.csproj ./src/Language/
+COPY src/*.sln .
+COPY src/Domain/*.csproj ./Domain/
+COPY src/Application/*.csproj ./Application/
+COPY src/Presentation/*.csproj ./Presentation/
+COPY src/Infrastructure/*.csproj ./Infrastructure/
+COPY src/Language/*.csproj ./Language/
 
 RUN dotnet restore
 
