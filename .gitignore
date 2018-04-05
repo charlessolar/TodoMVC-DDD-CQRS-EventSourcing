@@ -211,3 +211,4 @@ src/Web/test/**/*.js.map
 src/Web/*.awcache
 
 src/Web/node_modules
+src/Web/dist

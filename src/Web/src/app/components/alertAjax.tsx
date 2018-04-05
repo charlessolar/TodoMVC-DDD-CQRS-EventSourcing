@@ -33,7 +33,7 @@ export default function AlertAjax(context: Context) {
         return null;
       }
 
-      let message = response.data.message;
+      let message = null;
       if (!message) {
         message = 'Failed to process request';
       }

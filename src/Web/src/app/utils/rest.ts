@@ -1,4 +1,4 @@
-import { JsonServiceClient, IRequestFilterOptions, IReturn } from '@servicestack/client';
+import { JsonServiceClient } from '@servicestack/client';
 
 import Debug from 'debug';
 
