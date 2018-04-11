@@ -1,36 +1,24 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es2017",
+    "target": "es5",
     "jsx": "react",
-    "module": "esnext",
+    "module": "es6",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
+    "noUnusedLocals": true,
     "removeComments": true,
     "strictNullChecks": false,
-    "allowJs": true,
-    "sourceRoot": "src",
+    "outDir": "build",
+    "lib": ["es6", "es7", "dom"],
     "baseUrl": "src",
-    "skipLibCheck": true,
-    "lib": [ "es2017", "dom" ]
+    "paths": {
+      "app/*": ["./app/*"]
+    }
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "filesGlob": [
-    "./src/**/*.ts",
-    "./test/**/*.ts",
-    "./types/**/*.d.ts"
-  ],
-  "atom": {
-    "rewriteTsconfig": false
-  },
-  "awesomeTypescriptLoaderOptions": {
-      "useCache": true
-  }
+  "exclude": ["dist", "build", "node_modules"]
 }

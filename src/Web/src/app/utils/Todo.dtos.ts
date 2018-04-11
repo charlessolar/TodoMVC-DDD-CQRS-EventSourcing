@@ -1,9 +1,9 @@
 /* tslint:disable */
 /* Options:
-Date: 2018-04-05 20:25:50
+Date: 2018-04-09 21:21:53
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://10.0.0.201
+BaseUrl: http://10.0.0.201:8080
 
 //GlobalNamespace: DTOs
 //MakePropertiesOptional: True

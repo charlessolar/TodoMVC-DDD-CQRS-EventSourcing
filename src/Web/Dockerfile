@@ -1,9 +1,7 @@
 FROM alpine as build
 
-MAINTAINER charlessolar@gmail.com
-
 RUN apk add --update --no-cache nodejs git
-RUN npm i -g yarn nps
+RUN npm i -g yarn
 
 WORKDIR /src
 
@@ -14,7 +12,7 @@ RUN yarn
 
 COPY . .
 WORKDIR /src/src/Web
-RUN yarn start webpack.build.prod
+RUN yarn build
 
 FROM nginx:stable as runtime
 WORKDIR /usr/share/nginx/html
