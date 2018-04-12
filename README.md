@@ -11,6 +11,17 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
 
+**Note**
+The web frontend is configured to talk to the api server via `http://localhost:8080` in `docker-compose.override.yml`
+If you are running `docker-compose up` on another machine you need to change that address to the remote machines ip.
+Example: 
+```
+frontend:
+    build:
+      args:
+        API_SERVER: http://10.0.0.200:8080
+```
+
 # Source Code!
 
 Being this project has such a small domain context there are only a couple source files which contain real logic.  Other files are helpers, extensions, or setup.  
