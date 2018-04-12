@@ -17,13 +17,10 @@ Being this project has such a small domain context there are only a couple sourc
 
 ### Important backend files:
 
-[Domain Command Handler](src/Domain/Todo/Handler.cs)
-[Domain Todo Aggregate](src/Domain/Todo/Todo.cs)
-[Read Model Projector](src/Application/Todo/Handler.cs)
-[Web Request Handler](src/Presentation/Service.cs)
-
-### Important frontend files:
-
+* [Domain Command Handler](src/Domain/Todo/Handler.cs)
+* [Domain Todo Aggregate](src/Domain/Todo/Todo.cs)
+* [Read Model Projector](src/Application/Todo/Handler.cs)
+* [Web Request Handler](src/Presentation/Service.cs)
 
 
 ### EventStore Management

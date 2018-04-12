@@ -12,6 +12,7 @@ RUN yarn
 
 COPY . .
 WORKDIR /src/src/Web
+ENV API_SERVER http://localhost:8080
 RUN yarn build
 
 FROM nginx:stable as runtime

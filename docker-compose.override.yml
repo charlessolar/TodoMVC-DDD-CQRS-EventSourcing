@@ -27,5 +27,6 @@ services:
       - TODOMVC_RabbitUserName=${RABBIT_USERNAME}
       - TODOMVC_RabbitPassword=${RABBIT_PASSWORD}
   frontend:
-    environment:
-      - API_SERVER=${PRESENTATION_SERVER:-http://presentation:8080}
+    build:
+      args:
+        API_SERVER: http://localhost:8080
