@@ -42,7 +42,7 @@ Your application ends up being 1 long audit log which records every state-changi
 
 Imagine a shoppign cart which fills with items to buy.  The warehouse only cares about the final order of the stuff the customer actually agreed to purchase -
 
-![EventSourcing](img/eventsourcing.png)
+<img src="img/eventsourcing.png" height="400px">
 
 but the marketing team might care more about the items the customer removed from their cart **without** buying.  
 
@@ -52,13 +52,19 @@ Using eventsourcing correctly you can generate models which contain both sets of
 
 CQRS stands for **Command and Query Responsibility Segregation**
 
-![CQRS](img/cqrs-logical.svg)
+<img src="img/cqrs-logical.svg" height="400px">
 
 In a nut shell - commands are everything that want to change the application state.  Queries are anything that want to read application state.  **There is no overlap**
 
 Commands do not return any data other than if they were *Accepted* or *Rejected*. Accepted meaning the change was saved and read models will be updated.  Rejected meaning the command failed validation or was not valid to be run at this time.  (One example would be trying to invoice a sales order twice)
 
+## Architecture Overview
 
+<img src="img/overview.png" height="400px">
+
+## Commands Processing
+
+<img src="img/commands.png" height="400px">
 
 ### Good reads
 
