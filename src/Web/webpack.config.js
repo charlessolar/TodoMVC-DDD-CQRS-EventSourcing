@@ -10,6 +10,14 @@ var outPath = path.join(__dirname, './dist');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+var GitRevisionPlugin = require("git-revision-webpack-plugin");
+
+const gitRevisionPlugin = new GitRevisionPlugin();
+
+const currentDateTime = new Date();
+const currentDate = currentDateTime.toLocaleDateString("en-GB").replace(/\//g, "-");
+const currentTime = currentDateTime.toLocaleTimeString("en-GB", { hour12: false }).replace(/:/g, "-");
+const fileDateTime = currentDate + "-" + currentTime;
 
 module.exports = {
   context: sourcePath,
@@ -98,6 +106,17 @@ module.exports = {
     runtimeChunk: true
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: !isProduction,
+      "API_SERVER": JSON.stringify(process.env.API_SERVER),
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "VERSION": JSON.stringify(gitRevisionPlugin.version()),
+      "COMMITHASH": JSON.stringify(gitRevisionPlugin.commithash()),
+      'BRANCH': JSON.stringify(gitRevisionPlugin.branch()),
+      "TIMESTAMP": fileDateTime,
+      "DATE": currentDate,
+      "TIME": currentTime
+    }),
     new WebpackCleanupPlugin(),
     new ExtractTextPlugin({
       filename: 'styles.css',
@@ -108,6 +127,7 @@ module.exports = {
     })
   ],
   devServer: {
+    port: 9000,
     contentBase: sourcePath,
     hot: true,
     inline: true,

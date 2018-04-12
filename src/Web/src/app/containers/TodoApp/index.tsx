@@ -32,22 +32,11 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   }
 
   componentWillMount() {
-    this.checkLocationChange();
-  }
-
-  componentDidUpdate() {
     const todoStore = this.props[STORE_TODO] as TodoStore;
-    const { filter } = this.state;
-
-    switch (filter) {
-      case TodoFilter.ACTIVE:
-        todoStore.getActiveTodos();
-      case TodoFilter.COMPLETED:
-        todoStore.getCompletedTodos();
-      default:
-        todoStore.getAllTodos();
-    }
+    this.checkLocationChange();
+    todoStore.getAllTodos();
   }
+
 
   componentWillReceiveProps(nextProps: TodoAppProps, nextContext: any) {
     this.checkLocationChange();
@@ -81,28 +70,23 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
       return (<h2>Loading...</h2>);
     }
 
-    const todos = todoStore.todos;
-
-    const footer = todoStore.todos.length && (
-      <Footer
-        filter={filter}
-        activeCount={todoStore.activeTodos.length}
-        completedCount={todoStore.completedTodos.length}
-        onClearCompleted={todoStore.clearCompleted}
-        onChangeFilter={this.handleFilter}
-      />
-    );
-
     return (
       <div className={style.normal}>
-        <Header addTodo={todoStore.addTodo} />
+        <Header addTodo={(msg) => todoStore.addTodo(msg)} />
         <TodoList
-          todos={todos}
-          completeAll={todoStore.completeAll}
-          deleteTodo={todoStore.deleteTodo}
-          editTodo={todoStore.editTodo}
+          todos={todoStore.todos}
+          completeAll={() => todoStore.completeAll()}
+          deleteTodo={(id) => todoStore.deleteTodo(id)}
+          editTodo={(msg) => todoStore.editTodo(msg)}
+          toggleTodo={(id, completed) => todoStore.toggleTodo(id, completed)}
         />
-        {footer}
+        <Footer
+          filter={filter}
+          activeCount={-1}
+          completedCount={-1}
+          onClearCompleted={todoStore.clearCompleted}
+          onChangeFilter={this.handleFilter}
+        />
         {children}
       </div>
     );

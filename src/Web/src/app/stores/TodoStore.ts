@@ -1,4 +1,4 @@
-import { observable, computed, action, runInAction } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 
 import { inject, Client } from '../utils';
 import { DTOs } from '../utils/Todo.dtos';
@@ -19,56 +19,43 @@ export class TodoStore {
     this.todos = new Array<TodoModel>();
   }
 
-  @computed
-  get activeTodos() {
-    return this.todos.filter((todo) => !todo.completed);
-  }
-
-  @computed
-  get completedTodos() {
-    return this.todos.filter((todo) => todo.completed);
-  }
-
   @action
   public async getAllTodos() {
-    this.loading=true;
+    this.loading = true;
     const request = new DTOs.AllTodos();
 
     try {
       const response = await this._client.query(request);
 
       this.pushTodos(response.records);
-      this.loading=false;
-    } catch {
-      throw 'failed to get todos';
+    } catch (e) {
+      throw 'failed to get todos: ' + e;
     }
   }
   @action
   public async getActiveTodos() {
-    this.loading=true;
+    this.loading = true;
     const request = new DTOs.ActiveTodos();
 
     try {
       const response = await this._client.query(request);
 
       this.pushTodos(response.records);
-      this.loading=false;
-    } catch {
-      throw 'failed to get todos';
+    } catch (e) {
+      throw 'failed to get todos: ' + e;
     }
   }
   @action
   public async getCompletedTodos() {
-    this.loading=true;
+    this.loading = true;
     const request = new DTOs.CompleteTodos();
 
     try {
       const response = await this._client.query(request);
 
       this.pushTodos(response.records);
-      this.loading=false;
-    } catch {
-      throw 'failed to get todos';
+    } catch (e) {
+      throw 'failed to get todos: ' + e;
     }
   }
 
@@ -76,8 +63,9 @@ export class TodoStore {
   private pushTodos(todos: DTOs.TodoResponse[]) {
 
     todos.forEach((todo) => {
-      this.todos.push(new TodoModel(todo.message, todo.active, todo.id));
+      this.todos.push(new TodoModel(todo.message, !todo.active, todo.id));
     });
+    this.loading = false;
   }
 
   @action
@@ -94,13 +82,40 @@ export class TodoStore {
       runInAction("add todo", () => {
         this.todos.push(model);
       });
-    } catch {
-      throw 'failed to save todo';
+    } catch (e) {
+      throw 'failed to save todo: ' + e;
     }
   }
 
   public editTodo(message: string) {
     throw 'editing disabled for now'
+  }
+
+  @action
+  public async toggleTodo(id: string, completed: boolean) {
+    let request: any;
+    if (completed) {
+      request = new DTOs.MarkTodoComplete();
+      request.todoId = id;
+    } else {
+      request = new DTOs.MarkTodoActive();
+      request.todoId = id;
+    }
+
+    try {
+      await this._client.command(request);
+
+      runInAction('change status todo', () => {
+        this.todos = this.todos.map((todo) => {
+          if (todo.id === id) {
+            todo.completed = completed;
+          }
+          return todo;
+        });
+      });
+    } catch (e) {
+      throw 'failed to change todo status: ' + e;
+    }
   }
 
   @action
@@ -113,41 +128,65 @@ export class TodoStore {
       await this._client.command(request);
 
       runInAction('delete todo', () => {
-        this.todos = this.todos.filter((todo) => todo.id == id);
+        this.todos = this.todos.filter((todo) => todo.id !== id);
       });
-    } catch {
-      throw 'failed to remove todo';
+    } catch (e) {
+      throw 'failed to remove todo: ' + e;
     }
   }
 
   @action
   public async completeAll() {
-    
-    await Promise.all(this.todos.map(async (todo) => {
-      const request = new DTOs.MarkTodoComplete();
-      request.todoId = todo.id;
 
-      await this._client.command(request);
+    const notcompleted = this.todos.filter(todo => !todo.completed);
+
+    try {
+      await Promise.all(notcompleted.map(async (todo) => {
+        const request = new DTOs.MarkTodoComplete();
+        request.todoId = todo.id;
+
+        await this._client.command(request);
+
+      }));
 
       runInAction('complete todo', () => {
-        todo.completed = true;
+        this.todos = this.todos.map((todo) => {
+          if (!todo.completed) {
+            todo.completed = true;
+          }
+          return todo;
+        });
       });
-    }));
+    } catch (e) {
+      throw 'failed to mark todos complete: ' + e;
+    }
   };
 
   @action
   public async clearCompleted() {
-    
-    await Promise.all(this.todos.map(async (todo) => {
-      const request = new DTOs.MarkTodoActive();
-      request.todoId = todo.id;
 
-      await this._client.command(request);
+    const completed = this.todos.filter(todo => todo.completed);
 
-      runInAction('activate todo', () => {
-        todo.completed = false;
+    try {
+      await Promise.all(completed.map(async (todo) => {
+        const request = new DTOs.MarkTodoActive();
+        request.todoId = todo.id;
+
+        await this._client.command(request);
+      }));
+
+      runInAction('activate todos', () => {
+        this.todos = this.todos.map((todo) => {
+          if (todo.completed) {
+            todo.completed = false;
+          }
+          return todo;
+        });
       });
-    }));
+    } catch (e) {
+      throw 'failed to mark todos active: ' + e;
+    }
+
   };
 }
 

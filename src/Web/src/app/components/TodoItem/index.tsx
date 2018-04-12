@@ -5,6 +5,7 @@ import { TodoModel } from 'app/models/TodoModel';
 import * as style from './style.css';
 
 export interface TodoActions {
+  toggleTodo: (id: string, completed: boolean) => any;
   editTodo: (id: string, data: Partial<TodoModel>) => any;
   deleteTodo: (id: string) => any;
 }
@@ -35,7 +36,7 @@ export class TodoItem extends React.Component<TodoProps, TodoState> {
       target.checked !== undefined &&
       target.checked !== todo.completed
     ) {
-      this.updateTodo({ completed: target.checked });
+      this.toggleTodo( target.checked );
     }
   };
 
@@ -44,6 +45,10 @@ export class TodoItem extends React.Component<TodoProps, TodoState> {
     deleteTodo(todo.id);
   };
 
+  private toggleTodo = (completed: boolean) => {
+    const { todo } = this.props;
+    this.props.toggleTodo(todo.id, completed);
+  }
   private updateTodo = (data: Partial<TodoModel>) => {
     const { todo } = this.props;
     if (data.text !== undefined && data.text.trim().length === 0) {
