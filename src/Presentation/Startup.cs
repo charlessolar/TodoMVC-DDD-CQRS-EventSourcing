@@ -185,7 +185,7 @@ namespace Example
             Plugins.Add(new CorsFeature(
                 allowOriginWhitelist: new[]
                 {
-                    "http://localhost:9000"
+                    "http://localhost",
                 },
                 allowCredentials: true,
                 allowedHeaders: "Content-Type, Authorization",
