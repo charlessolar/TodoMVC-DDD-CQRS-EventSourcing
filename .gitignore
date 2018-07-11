@@ -212,3 +212,6 @@ src/Web/*.awcache
 
 src/Web/node_modules
 src/Web/dist
+
+# Rider
+.idea/
