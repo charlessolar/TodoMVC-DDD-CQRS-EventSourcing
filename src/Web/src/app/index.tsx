@@ -1,16 +1,50 @@
-import * as React from 'react';
-import { hot } from 'react-hot-loader';
-import { Router, Route, Switch } from 'react-router';
-import { Root } from 'app/containers/Root';
-import { TodoApp } from 'app/containers/TodoApp';
+import { MuiThemeProvider } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
 
-// render react DOM
-export const App = hot(module)(({ history }) => (
-  <Root>
-    <Router history={history}>
-      <Switch>
-        <Route path="/" component={TodoApp} />
-      </Switch>
-    </Router>
-  </Root>
-));
+import theme from './theme';
+
+import {
+    ScrollReset,
+    ServiceStackProvider,
+    AuthProvider,
+    LayoutProvider,
+    RouterProvider,
+} from 'utils/components';
+
+const debug = Debug('app');
+
+export const App = () => {
+    const [started, finishSetup] = React.useState(false) as [boolean, Function];
+
+    const start = async () => {
+        debug('start');
+        await Promise.all([
+            // this.preAuth(),
+            new Promise(resolve => {
+                setTimeout(() => resolve(), 1);
+            }),
+        ]);
+
+        finishSetup(true);
+    };
+
+    // what's a better way of doing this
+    if (!started) {
+        start();
+    }
+    return (
+        <MuiThemeProvider theme={theme}>
+            <Loading display={{ loading: !started }}>
+                <SnackbarProvider
+                    maxSnack={3}
+                    autoHideDuration={6000}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                >
+                </SnackbarProvider>
+            </Loading>
+        </MuiThemeProvider>
+    );
+};

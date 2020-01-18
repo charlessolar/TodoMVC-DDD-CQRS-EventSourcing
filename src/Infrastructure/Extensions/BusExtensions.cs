@@ -1,4 +1,5 @@
 ﻿using Aggregates;
+using Aggregates.Exceptions;
 using Aggregates.Messages;
 using Infrastructure.Commands;
 using Infrastructure.Exceptions;
@@ -16,6 +17,22 @@ namespace Infrastructure.Extensions
     public static class BusExtensions
     {
         private static readonly TimeSpan TenSeconds = TimeSpan.FromSeconds(10);
+
+        private static void CheckResponse(Aggregates.Messages.ICommand command, Aggregates.Messages.IMessage msg)
+        {
+            if (msg is Reject)
+            {
+                var reject = (Reject)msg;
+                Log.Logger.WarnEvent("Rejection", $"Command was rejected - Message: {reject.Message}");
+                throw new RejectedException(command.GetType(), reject.Message, reject.Exception);
+            }
+            if (msg is Error)
+            {
+                var error = (Error)msg;
+                Log.Logger.WarnEvent("Fault", $"Command Fault!\n{error.Message}");
+                throw new RejectedException(command.GetType(), $"Command Fault!\n{error.Message}");
+            }
+        }
 
         public static Task Result<TResponse>(this IMessageHandlerContext context, TResponse payload, string eTag = "") where TResponse : class
         {
@@ -77,7 +94,8 @@ namespace Infrastructure.Extensions
             if (!response.IsCompleted)
                 throw new CommandTimeoutException("Command timed out");
 
-            response.Result.CommandResponse();
+            // verify command was accepted
+            CheckResponse(message, response.Result);
         }
         public static async Task<Responses.Paged<TResponse>> Request<T, TResponse>(this IMessageSession bus, T message) where T : Paged where TResponse : class
         {

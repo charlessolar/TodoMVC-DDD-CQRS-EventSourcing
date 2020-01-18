@@ -1,16 +1,20 @@
 /** Global definitions for developement **/
 
-// for style loader
-declare module '*.css' {
-  const styles: any;
-  export = styles;
-}
+declare const NODE_ENV: string;
+declare const GA_MEASUREMENT_ID: string;
+declare let __DEV__: boolean;
+declare let API_SERVER: string;
+declare let VERSION: string;
+declare let COMMITHASH: string;
+declare let BRANCH: string;
+declare let TIMESTAMP: string;
+declare let DATE: string;
+declare let TIME: string;
+declare let FILENAME: string;
 
-declare const __DEV__: boolean;
-declare const VERSION: string;
-declare const COMMITHASH: string;
-declare const TIMESTAMP: string;
-declare const BRANCH: string;
-declare const DATE: string;
-declare const TIME: string;
-declare const API_SERVER: string;
+// these are provided via webpack ProvidePlugin config
+declare var Debug: debug.Debug;
+declare class Loading extends React.PureComponent<{ display: { loading: boolean, error?: boolean } }> { };
+
+declare var React: typeof import("react");
+declare var ReactDOM: typeof import("react-dom");
