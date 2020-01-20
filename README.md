@@ -7,8 +7,8 @@ One docker image we require to run (eventstore) doesn't have a windows container
 **Start**
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose.override.yml build
-docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+docker-compose build
+docker-compose up
 ```
 
 **Note**
@@ -56,7 +56,7 @@ CQRS stands for **Command and Query Responsibility Segregation**
 
 In a nut shell - commands are everything that want to change the application state.  Queries are anything that want to read application state.  **There is no overlap**
 
-Commands do not return any data other than if they were *Accepted* or *Rejected*. Accepted meaning the change was saved and read models will be updated.  Rejected meaning the command failed validation or was not valid to be run at this time.  (One example would be trying to invoice a sales order twice)
+Commands do not return any data other than if they were *Accepted* or *Rejected*. Accepted meaning the change was saved and read models will be updated.  Rejected meaning the command failed validation or was not valid to be run at this time.  (One example would be trying to invoice a sales order which has already been invoiced)
 
 ## Architecture Overview
 

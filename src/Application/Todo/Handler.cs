@@ -57,13 +57,12 @@ namespace Example.Todo
             if (!MemoryDB.TryGetValue(e.TodoId, out var existing))
                 throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
 
-
             if (!MemoryDB.TryUpdate(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = e.Message,
                 Active = existing.Active
-            }))
+            }, existing))
                 throw new InvalidOperationException($"Failed to update {e.TodoId}");
             return Task.CompletedTask;
         }
