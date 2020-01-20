@@ -18,6 +18,11 @@ namespace Example.Todo
             var task = await ctx.For<Todo>().New(command.TodoId).ConfigureAwait(false);
             task.Add(command.Message);
         }
+        public async Task Handle(Commands.Edit command, IMessageHandlerContext ctx)
+        {
+            var task = await ctx.For<Todo>().Get(command.TodoId).ConfigureAwait(false);
+            task.Edit(command.Message);
+        }
         public async Task Handle(Commands.Remove command, IMessageHandlerContext ctx)
         {
             var task = await ctx.For<Todo>().Get(command.TodoId).ConfigureAwait(false);

@@ -7,15 +7,14 @@ interface Props {
 
 }
 
-export const TodoApp => (props: Props) => {
+export const TodoApp = (props: Props) => {
 
     const [filter, setFilter] = useState(ALL);
 
     const onSubmit = () => {
-
+        console.log('submit');
     };
 
-    const
 
     return (
         <div>

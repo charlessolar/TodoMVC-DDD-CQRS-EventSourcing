@@ -6,7 +6,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const WebpackBundleAnalzyer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 // config helpers:
@@ -104,7 +104,6 @@ module.exports = ({
         exclude: /(node_modules|test-utils|\.test\.ts$)/,
         use: ['awesome-typescript-loader']
       },
-      { enforce: "pre", test: /\.js$/, use: 'source-map-loader' },
 
       {
         test: /\.html$/i,
@@ -235,17 +234,11 @@ module.exports = ({
         to: outDir + '/favicon.ico'
       }]),
       new webpack.optimize.AggressiveMergingPlugin(),
-      new UglifyJSPlugin({
-        sourceMap: true,
+      new TerserPlugin({
         parallel: true,
-        uglifyOptions: {
-          compress: {
-            drop_console: true
-          },
-          output: {
-            comments: false
-          }
-        }
+        terserOptions: {
+          ecma: 6,
+        },
       }),
       new CompressionPlugin({
         filename: "[file].gz[query]",

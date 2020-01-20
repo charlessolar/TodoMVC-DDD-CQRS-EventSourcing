@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { ALL, COMPLETED, ACTIVE } from '../../constants';
+import { ALL, COMPLETED, ACTIVE } from '../../../constants';
 
 interface Props {
     count: number;

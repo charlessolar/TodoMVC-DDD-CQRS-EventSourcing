@@ -1,4 +1,4 @@
-import useFetch from 'use-http'
+import useFetch from 'use-http';
 
 import { Todo } from '../models/todo';
 

@@ -17,6 +17,14 @@ namespace Example.Todo
                 x.Message = message;
             });
         }
+        public void Edit(string message)
+        {
+            Apply<Events.Edited>(x =>
+            {
+                x.TodoId = Id;
+                x.Message = message;
+            });
+        }
         public void Remove()
         {
             Apply<Events.Removed>(x =>

@@ -50,7 +50,17 @@ namespace Example.Controllers
             return _session.CommandToDomain(new Todo.Commands.Add
             {
                 TodoId = todoId,
-                Message=message
+                Message = message
+            });
+        }
+        [HttpPost]
+        public Task Edit(Guid todoId, string message)
+        {
+            return _session.CommandToDomain(new Todo.Commands.Edit
+            {
+
+                TodoId = todoId,
+                Message = message
             });
         }
         [HttpPost]

@@ -52,6 +52,21 @@ namespace Example.Todo
                 throw new InvalidOperationException($"Todo {e.TodoId} already exists");
             return Task.CompletedTask;
         }
+        public Task Handle(Events.Edited e, IMessageHandlerContext ctx)
+        {
+            if (!MemoryDB.TryGetValue(e.TodoId, out var existing))
+                throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
+
+
+            if (!MemoryDB.TryUpdate(e.TodoId, new Models.TodoResponse
+            {
+                Id = e.TodoId,
+                Message = e.Message,
+                Active = existing.Active
+            }))
+                throw new InvalidOperationException($"Failed to update {e.TodoId}");
+            return Task.CompletedTask;
+        }
         public Task Handle(Events.Removed e, IMessageHandlerContext ctx)
         {
             if (!MemoryDB.TryRemove(e.TodoId, out var model))
@@ -61,7 +76,7 @@ namespace Example.Todo
         public Task Handle(Events.MarkedActive e, IMessageHandlerContext ctx)
         {
             Models.TodoResponse model;
-            if(!MemoryDB.TryGetValue(e.TodoId, out model))
+            if (!MemoryDB.TryGetValue(e.TodoId, out model))
                 throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
 
             model.Active = true;

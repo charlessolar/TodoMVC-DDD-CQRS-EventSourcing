@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import { EditTodo, DeleteTodo, MarkActive, MarkComplete } from '../../../../../services/editTodo';
+import { EditTodo, DeleteTodo, MarkActive, MarkComplete } from '../../../../../services';
 import { Todo } from '../../../../../models/todo';
 
 

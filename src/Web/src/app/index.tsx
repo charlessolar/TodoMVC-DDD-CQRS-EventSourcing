@@ -1,15 +1,8 @@
-import { MuiThemeProvider } from '@material-ui/core';
-import { SnackbarProvider } from 'notistack';
+import { Provider } from 'use-http';
 
-import theme from './theme';
+import { TodoApp } from 'app/todo';
 
-import {
-    ScrollReset,
-    ServiceStackProvider,
-    AuthProvider,
-    LayoutProvider,
-    RouterProvider,
-} from 'utils/components';
+import { config } from './config';
 
 const debug = Debug('app');
 
@@ -33,18 +26,10 @@ export const App = () => {
         start();
     }
     return (
-        <MuiThemeProvider theme={theme}>
+        <Provider url={config.apiUrl}>
             <Loading display={{ loading: !started }}>
-                <SnackbarProvider
-                    maxSnack={3}
-                    autoHideDuration={6000}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                >
-                </SnackbarProvider>
+                <TodoApp />
             </Loading>
-        </MuiThemeProvider>
+        </Provider>
     );
 };
