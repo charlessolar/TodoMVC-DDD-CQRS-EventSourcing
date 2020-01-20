@@ -10,7 +10,7 @@ COPY src/Web/yarn.lock .
 
 RUN yarn
 
-COPY .git
+COPY .git .
 COPY src/Web .
 WORKDIR /src
 
