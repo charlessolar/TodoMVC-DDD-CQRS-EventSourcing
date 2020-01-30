@@ -12,7 +12,7 @@ export const MarkAllComplete = (): [
     (todoIds: string[]) => Promise<void>
 ] => {
     const fetcher = useFetch(
-        { path: `/todos/complete`, method: 'POST' }
+        { path: `/todo/complete`, method: 'POST' }
     );
 
     const isSent = useRef<boolean>(false);

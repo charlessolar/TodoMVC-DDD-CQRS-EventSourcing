@@ -7,9 +7,9 @@ const debug = Debug(FILENAME);
 export const Todos = () => {
     const { loading, error, data } = useFetch(
         {
-            path: '/todos',
+            path: '/todo',
             data: []
         }, []);
 
-    return { loading, error, todos: data.records.map(x => new Todo(x)) };
+    return { loading, error, todos: data && data.records && data.records.map(x => new Todo(x)) || [] };
 };

@@ -12,7 +12,7 @@ export const AddTodo = (): [
     (message: string) => Promise<void>
 ] => {
     const fetcher = useFetch(
-        { path: '/todos', method: 'POST' }
+        { path: '/todo', method: 'POST' }
     );
 
     const isSent = useRef<boolean>(false);

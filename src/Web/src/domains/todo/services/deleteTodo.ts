@@ -12,7 +12,7 @@ export const DeleteTodo = (todoId: string): [
     () => Promise<void>
 ] => {
     const fetcher = useFetch(
-        { path: '/todos', method: 'DELETE' }
+        { path: '/todo', method: 'DELETE' }
     );
 
     const isSent = useRef<boolean>(false);

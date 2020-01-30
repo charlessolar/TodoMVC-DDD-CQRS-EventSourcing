@@ -106,6 +106,8 @@ namespace Example
                 .SetRetries(20)
             ).ConfigureAwait(false);
 
+            await Aggregates.Configuration.Start().ConfigureAwait(false);
+
             return Aggregates.Bus.Instance;
         }
         private static string GetRabbitConnectionString()
