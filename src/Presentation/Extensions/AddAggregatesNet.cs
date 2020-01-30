@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Aggregates;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NServiceBus;
 using System;
@@ -12,7 +13,16 @@ namespace Presentation.Extensions
     {
         public static IServiceCollection AddAggregatesNet(this IServiceCollection services, EndpointConfiguration configuration)
         {
-            services.AddSingleton<IHostedService>(provider => new AggregatesService(configuration, services, provider));
+            Aggregates.Configuration.Build(c => c
+                   .Microsoft(services)
+                   .NewtonsoftJson()
+                   .NServiceBus(configuration)
+                   .SetUniqueAddress(Defaults.Instance.ToString())
+                   .SetPassive()
+                   .SetRetries(20)
+               ).Wait();
+
+            services.AddSingleton<IHostedService>(provider => new AggregatesService(provider));
             
             services.AddSingleton<IMessageSession>(_ => Aggregates.Bus.Instance);
 

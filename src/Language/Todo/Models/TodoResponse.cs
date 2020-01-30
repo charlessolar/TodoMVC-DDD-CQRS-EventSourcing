@@ -1,11 +1,11 @@
-﻿using ServiceStack.Model;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Example.Todo.Models
 {
-    public class TodoResponse : IHasGuidId
+    public class TodoResponse 
     {
         public Guid Id { get; set; }
         

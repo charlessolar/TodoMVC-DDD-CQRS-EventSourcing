@@ -12,33 +12,21 @@ namespace Presentation
 {
     public class AggregatesService : IHostedService
     {
-        public AggregatesService(EndpointConfiguration config, IServiceCollection collection, IServiceProvider provider)
+        public AggregatesService(IServiceProvider provider)
         {
-            this.config = config;
-            this.collection = collection;
             this.provider = provider;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            return Aggregates.Configuration.Build(c => c
-                   .Microsoft(collection, provider)
-                   .NewtonsoftJson()
-                   .NServiceBus(config)
-                   .SetUniqueAddress(Defaults.Instance.ToString())
-                   .SetPassive()
-                   .SetRetries(20)
-               );
+            return MSConfigure.MicrosoftStart(provider);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            return endpoint.Stop();
+            return Aggregates.Bus.Instance.Stop();
         }
 
-        IEndpointInstance endpoint;
-        readonly EndpointConfiguration config;
-        readonly IServiceCollection collection;
         readonly IServiceProvider provider;
     }
 }
