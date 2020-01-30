@@ -88,7 +88,6 @@ namespace Example
             transport.ConnectionString(GetRabbitConnectionString());
 
             config.UsePersistence<InMemoryPersistence>();
-            config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
 
             config.Pipeline.Remove("LogErrorOnInvalidLicense");
 

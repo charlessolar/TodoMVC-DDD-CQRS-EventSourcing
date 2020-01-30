@@ -14,9 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "TODOMVC_RabbitPassword": "admin",
         "TODOMVC_RabbitConnection": "10.0.0.201",
-        "TODOMVC_RabbitUserName": "admin",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
