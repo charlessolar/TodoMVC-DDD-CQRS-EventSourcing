@@ -11,7 +11,7 @@ using Infrastructure.Extensions;
 namespace Example.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class TodoController : ControllerBase
     {
 
@@ -31,12 +31,14 @@ namespace Example.Controllers
             {
             });
         }
+        [HttpGet]
         public Task<Paged<Todo.Models.TodoResponse>> Active()
         {
             return _session.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
+        [HttpGet]
         public Task<Paged<Todo.Models.TodoResponse>> Complete()
         {
             return _session.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
