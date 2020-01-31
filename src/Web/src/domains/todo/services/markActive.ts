@@ -12,7 +12,7 @@ export const MarkActive = (): [
     (todoId: string) => Promise<void>
 ] => {
     const fetcher = useFetch(
-        { path: `/todo/active`, method: 'POST' }
+        { path: `/todo/mark_active`, method: 'POST' }
     );
 
     const isSent = useRef<boolean>(false);

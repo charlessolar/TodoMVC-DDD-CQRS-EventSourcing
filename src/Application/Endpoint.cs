@@ -79,6 +79,7 @@ namespace Example
             transport.ConnectionString(GetRabbitConnectionString());
 
             config.UsePersistence<InMemoryPersistence>();
+            config.EnableFeature<NServiceBus.Features.Sagas>();
 
             config.Pipeline.Remove("LogErrorOnInvalidLicense");
 
@@ -95,7 +96,6 @@ namespace Example
                 .SetRetries(20)
             ).ConfigureAwait(false);
 
-            _container.Register<IValidatorFactory, StructureMapValidatorFactory>();
 
             await Aggregates.Configuration.Start().ConfigureAwait(false);
 

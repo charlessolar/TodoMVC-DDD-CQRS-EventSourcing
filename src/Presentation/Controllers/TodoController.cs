@@ -11,7 +11,7 @@ using Infrastructure.Extensions;
 namespace Example.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class TodoController : ControllerBase
     {
 
@@ -31,14 +31,14 @@ namespace Example.Controllers
             {
             });
         }
-        [HttpGet]
+        [HttpGet("/active")]
         public Task<Paged<Todo.Models.TodoResponse>> Active()
         {
             return _session.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
-        [HttpGet]
+        [HttpGet("/complete")]
         public Task<Paged<Todo.Models.TodoResponse>> Complete()
         {
             return _session.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
@@ -55,7 +55,7 @@ namespace Example.Controllers
                 Message = message
             });
         }
-        [HttpPost]
+        [HttpPost("/edit")]
         public Task Edit(Guid todoId, string message)
         {
             return _session.CommandToDomain(new Todo.Commands.Edit
@@ -73,7 +73,7 @@ namespace Example.Controllers
                 TodoId = todoId
             });
         }
-        [HttpPost]
+        [HttpPost("/mark_complete")]
         public Task Complete(Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkComplete
@@ -81,7 +81,7 @@ namespace Example.Controllers
                 TodoId = todoId
             });
         }
-        [HttpPost]
+        [HttpPost("/mark_active")]
         public Task Active(Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkActive
