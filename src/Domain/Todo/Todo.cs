@@ -34,8 +34,7 @@ namespace Example.Todo
         }
         public void MarkActive()
         {
-            if (State.Active)
-                throw new BusinessException("Todo is already active");
+            Rule("Not Active", x => x.Active);
 
             Apply<Events.MarkedActive>(x =>
             {
@@ -44,8 +43,7 @@ namespace Example.Todo
         }
         public void MarkComplete()
         {
-            if (!State.Active)
-                throw new BusinessException("Todo is not active");
+            Rule("Active", x => !x.Active);
 
             Apply<Events.MarkedComplete>(x =>
             {

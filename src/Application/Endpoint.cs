@@ -7,7 +7,8 @@ using Microsoft.Extensions.Configuration;
 using NServiceBus;
 using NServiceBus.Serilog;
 using Serilog;
-using StructureMap;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 using System;
 using System.Linq;
 using System.Net;
@@ -21,7 +22,7 @@ namespace Example
         private static IConfiguration Configuration { get; set; }
 
         static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
-        private static IContainer _container;
+        private static Container _container;
         private static IEndpointInstance _bus;
 
         private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
@@ -53,17 +54,7 @@ namespace Example
 
             NServiceBus.Logging.LogManager.Use<SerilogFactory>();
 
-            _container = new Container(x =>
-            {
-                x.For<IValidatorFactory>().Use<StructureMapValidatorFactory>();
-
-                x.Scan(y =>
-                {
-                    y.TheCallingAssembly();
-
-                    y.WithDefaultConventions();
-                });
-            });
+            _container = new Container();
 
             // Start the bus
             _bus = InitBus().Result;
@@ -96,13 +87,15 @@ namespace Example
             await client.ConnectAsync().ConfigureAwait(false);
 
             await Aggregates.Configuration.Build(c => c
-                .StructureMap(_container)
+                .SimpleInjector(_container)
                 .EventStore(new[] { client })
                 .NewtonsoftJson()
                 .NServiceBus(config)
                 .SetUniqueAddress(Defaults.Instance.ToString())
                 .SetRetries(20)
             ).ConfigureAwait(false);
+
+            _container.Register<IValidatorFactory, StructureMapValidatorFactory>();
 
             await Aggregates.Configuration.Start().ConfigureAwait(false);
 

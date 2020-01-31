@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aggregates.NET" Version="0.15.22.878" />
     <PackageReference Include="FluentValidation" Version="8.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Aggregates.NET">
+      <HintPath>..\..\..\Common\Aggregates.NET\src\Aggregates.NET\bin\Debug\netstandard2.0\Aggregates.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
