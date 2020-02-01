@@ -89,7 +89,7 @@ namespace Example
 
             await Aggregates.Configuration.Build(c => c
                 .SimpleInjector(_container)
-                .EventStore(new[] { client })
+                .EventStore(client)
                 .NewtonsoftJson()
                 .NServiceBus(config)
                 .SetUniqueAddress(Defaults.Instance.ToString())

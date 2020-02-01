@@ -47,26 +47,25 @@ namespace Example.Controllers
         }
 
         [HttpPost]
-        public Task Add(Guid todoId, string message)
+        public Task Add(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.Add
             {
-                TodoId = todoId,
-                Message = message
+                TodoId = model.TodoId,
+                Message = model.Message
             });
         }
         [HttpPost("/edit")]
-        public Task Edit(Guid todoId, string message)
+        public Task Edit(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.Edit
             {
-
-                TodoId = todoId,
-                Message = message
+                TodoId = model.TodoId,
+                Message = model.Message
             });
         }
         [HttpDelete]
-        public Task Remove(Guid todoId)
+        public Task Remove([FromBody]Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.Remove
             {
@@ -74,7 +73,7 @@ namespace Example.Controllers
             });
         }
         [HttpPost("/mark_complete")]
-        public Task Complete(Guid todoId)
+        public Task Complete([FromBody]Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkComplete
             {
@@ -82,7 +81,7 @@ namespace Example.Controllers
             });
         }
         [HttpPost("/mark_active")]
-        public Task Active(Guid todoId)
+        public Task Active([FromBody]Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkActive
             {

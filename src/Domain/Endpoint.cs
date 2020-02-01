@@ -99,7 +99,7 @@ namespace Example
 
             await Aggregates.Configuration.Build(c => c
                 .StructureMap(_container)
-                .EventStore(new[] { client })
+                .EventStore(client)
                 .NewtonsoftJson()
                 .NServiceBus(config)
                 .SetUniqueAddress(Defaults.Instance.ToString())

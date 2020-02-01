@@ -1,4 +1,4 @@
-
+import uuid from 'uuid/v1';
 import useFetch from 'use-http';
 
 import { useRef } from 'react';
@@ -18,7 +18,7 @@ export const AddTodo = (): [
     const isSent = useRef<boolean>(false);
     const doFetch = async (message: string) => {
         isSent.current = true;
-        await fetcher.post({ message });
+        await fetcher.post({ todoId: uuid(), message });
     };
 
     return [

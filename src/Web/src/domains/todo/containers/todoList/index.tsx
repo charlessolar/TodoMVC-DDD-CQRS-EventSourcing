@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 import { FilteredList, TodoFooter, TodoToggling } from './components';
-import { Todos, MarkActive, MarkComplete } from '../../services';
+import { Todos, AddTodo } from '../../services';
 import { Todo } from '../../models/todo';
 
 import { ALL, COMPLETED, ACTIVE } from '../../constants';
+
+const ENTER_KEY = 13;
 
 // filter params here so that we could (in theory) pass these to Todo GET service
 interface FilterParams {
@@ -21,9 +23,9 @@ interface Props {
 export const TodoList = (props: Props) => {
     const { filterParams, onChangeStateFilter } = props;
 
-    // cheap way to refresh todo list when todos change (typically useFetch would have a "refresh" option)
-    const [refresh, setRefresh] = useState(0);
-    const { todos, loading, error } = Todos();
+    const [inputField, setInput] = useState();
+    const { todos, loading, error, refresh } = Todos();
+    const [processing, adding, failure, execute] = AddTodo();
 
     const shownTodos = todos.filter((todo) => {
         switch (filterParams.stateFilter) {
@@ -63,17 +65,36 @@ export const TodoList = (props: Props) => {
 
     }
 
+    const handleNewTodoKeyDown = async (e: React.KeyboardEvent) => {
+        if (e.keyCode !== ENTER_KEY) {
+            return;
+        }
+
+        e.preventDefault();
+
+        const val = inputField.trim();
+
+        if (!val) {
+            return;
+        }
+
+        await execute(val);
+        setInput(undefined);
+        refresh();
+    }
+
     return (
         <div>
             <Loading display={{ loading, error }}>
                 <header className="header">
                     <h1>todos</h1>
                     <input
-                        ref="newField"
                         className="new-todo"
                         placeholder="What needs to be done?"
-                        onKeyDown={e => this.handleNewTodoKeyDown(e)}
+                        onKeyDown={e => handleNewTodoKeyDown(e)}
+                        onChange={e => setInput(e.target.value)}
                         autoFocus={true}
+                        disabled={adding}
                     />
                 </header>
                 {todos.length && <section className="main">
