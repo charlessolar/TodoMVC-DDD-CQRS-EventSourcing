@@ -5,10 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aggregates.NET" Version="0.15.30.886" />
-    <PackageReference Include="Aggregates.NET.Microsoft" Version="0.15.30.886" />
-    <PackageReference Include="Aggregates.NET.NewtonsoftJson" Version="0.15.30.886" />
-    <PackageReference Include="Aggregates.NET.NServiceBus" Version="0.15.30.886" />
+    <PackageReference Include="Aggregates.NET" Version="0.15.31.887" />
+    <PackageReference Include="Aggregates.NET.Microsoft" Version="0.15.31.887" />
+    <PackageReference Include="Aggregates.NET.NewtonsoftJson" Version="0.15.31.887" />
+    <PackageReference Include="Aggregates.NET.NServiceBus" Version="0.15.31.887" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NServiceBus" Version="7.2.1" />
     <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.0.0" />

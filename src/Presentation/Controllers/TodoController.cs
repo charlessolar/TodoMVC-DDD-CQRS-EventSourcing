@@ -65,7 +65,7 @@ namespace Example.Controllers
                 Message = message
             });
         }
-        [HttpPost]
+        [HttpDelete]
         public Task Remove(Guid todoId)
         {
             return _session.CommandToDomain(new Todo.Commands.Remove
