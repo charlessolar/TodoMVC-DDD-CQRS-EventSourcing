@@ -1,4 +1,5 @@
 ﻿using Aggregates;
+using Application;
 using Infrastructure.Extensions;
 using Infrastructure.Queries;
 using NServiceBus;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Example.Todo
+namespace Example.Todo.Application
 {
     public class Handler :
         IHandleQueries<Queries.AllTodos>,
@@ -20,75 +21,74 @@ namespace Example.Todo
         IHandleMessages<Events.MarkedActive>,
         IHandleMessages<Events.MarkedComplete>
     {
-        private static ConcurrentDictionary<Guid, Models.TodoResponse> MemoryDB = new ConcurrentDictionary<Guid, Models.TodoResponse>();
 
         public async Task Handle(Queries.AllTodos query, IMessageHandlerContext ctx)
         {
-            var results = MemoryDB.Values;
+            var results = ctx.App<UnitOfWork>().GetAll();
 
-            await ctx.Result(results, results.Count, 0).ConfigureAwait(false);
+            await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
         public async Task Handle(Queries.ActiveTodos query, IMessageHandlerContext ctx)
         {
-            var results = MemoryDB.Values.Where(x => x.Active);
+            var results = ctx.App<UnitOfWork>().GetAll().Where(x => x.Active);
 
             await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
         public async Task Handle(Queries.CompleteTodos query, IMessageHandlerContext ctx)
         {
-            var results = MemoryDB.Values.Where(x => !x.Active);
+            var results = ctx.App<UnitOfWork>().GetAll().Where(x => !x.Active);
 
             await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
 
-        public Task Handle(Events.Added e, IMessageHandlerContext ctx)
+        public async Task Handle(Events.Added e, IMessageHandlerContext ctx)
         {
-            if (!MemoryDB.TryAdd(e.TodoId, new Models.TodoResponse
+            await ctx.UoW().Add(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = e.Message,
                 Active = true
-            }))
-                throw new InvalidOperationException($"Todo {e.TodoId} already exists");
-            return Task.CompletedTask;
+            });
         }
-        public Task Handle(Events.Edited e, IMessageHandlerContext ctx)
+        public async Task Handle(Events.Edited e, IMessageHandlerContext ctx)
         {
-            if (!MemoryDB.TryGetValue(e.TodoId, out var existing))
-                throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
+            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
 
-            if (!MemoryDB.TryUpdate(e.TodoId, new Models.TodoResponse
+            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = e.Message,
                 Active = existing.Active
-            }, existing))
-                throw new InvalidOperationException($"Failed to update {e.TodoId}");
-            return Task.CompletedTask;
+            }).ConfigureAwait(false);
         }
-        public Task Handle(Events.Removed e, IMessageHandlerContext ctx)
+        public async Task Handle(Events.Removed e, IMessageHandlerContext ctx)
         {
-            if (!MemoryDB.TryRemove(e.TodoId, out var model))
-                throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
-            return Task.CompletedTask;
-        }
-        public Task Handle(Events.MarkedActive e, IMessageHandlerContext ctx)
-        {
-            Models.TodoResponse model;
-            if (!MemoryDB.TryGetValue(e.TodoId, out model))
-                throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
+            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
 
-            model.Active = true;
-            return Task.CompletedTask;
+            await ctx.UoW().Delete<Models.TodoResponse>(e.TodoId).ConfigureAwait(false);
         }
-        public Task Handle(Events.MarkedComplete e, IMessageHandlerContext ctx)
+        public async Task Handle(Events.MarkedActive e, IMessageHandlerContext ctx)
         {
-            Models.TodoResponse model;
-            if (!MemoryDB.TryGetValue(e.TodoId, out model))
-                throw new InvalidOperationException($"Todo {e.TodoId} doesn't exist");
+            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
 
-            model.Active = false;
-            return Task.CompletedTask;
+            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
+            {
+                Id = e.TodoId,
+                Message = existing.Message,
+                Active = true
+            }).ConfigureAwait(false);
+        }
+
+        public async Task Handle(Events.MarkedComplete e, IMessageHandlerContext ctx)
+        {
+            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
+
+            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
+            {
+                Id = e.TodoId,
+                Message = existing.Message,
+                Active = false
+            }).ConfigureAwait(false);
         }
     }
 }

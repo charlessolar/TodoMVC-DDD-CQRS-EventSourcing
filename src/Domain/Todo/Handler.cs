@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Example.Todo
+namespace Example.Todo.Domain
 {
     public class Handler :
         IHandleMessages<Commands.Add>,

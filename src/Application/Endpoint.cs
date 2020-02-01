@@ -1,4 +1,5 @@
 ﻿using Aggregates;
+using Application;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using FluentValidation;
@@ -96,6 +97,7 @@ namespace Example
                 .SetRetries(20)
             ).ConfigureAwait(false);
 
+            _container.Register<Aggregates.UnitOfWork.IApplication, UnitOfWork>(Lifestyle.Scoped);
 
             await Aggregates.Configuration.Start().ConfigureAwait(false);
 
