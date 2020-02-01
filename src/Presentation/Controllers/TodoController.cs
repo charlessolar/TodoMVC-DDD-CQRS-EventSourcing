@@ -31,14 +31,14 @@ namespace Example.Controllers
             {
             });
         }
-        [HttpGet("/active")]
+        [HttpGet("[controller]/active")]
         public Task<Paged<Todo.Models.TodoResponse>> Active()
         {
             return _session.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
-        [HttpGet("/complete")]
+        [HttpGet("[controller]/complete")]
         public Task<Paged<Todo.Models.TodoResponse>> Complete()
         {
             return _session.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
@@ -55,7 +55,7 @@ namespace Example.Controllers
                 Message = model.Message
             });
         }
-        [HttpPost("/edit")]
+        [HttpPost("[controller]/edit")]
         public Task Edit(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.Edit
@@ -65,27 +65,27 @@ namespace Example.Controllers
             });
         }
         [HttpDelete]
-        public Task Remove([FromBody]Guid todoId)
+        public Task Remove(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.Remove
             {
-                TodoId = todoId
+                TodoId = model.TodoId,
             });
         }
-        [HttpPost("/mark_complete")]
-        public Task Complete([FromBody]Guid todoId)
+        [HttpPost("[controller]/mark_complete")]
+        public Task Complete(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkComplete
             {
-                TodoId = todoId
+                TodoId = model.TodoId,
             });
         }
-        [HttpPost("/mark_active")]
-        public Task Active([FromBody]Guid todoId)
+        [HttpPost("[controller]/mark_active")]
+        public Task Active(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkActive
             {
-                TodoId = todoId
+                TodoId = model.TodoId,
             });
         }
     }

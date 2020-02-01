@@ -11,17 +11,9 @@ export const TodoApp = (props: Props) => {
 
     const [filter, setFilter] = useState(ALL);
 
-    const onSubmit = () => {
-        console.log('submit');
-    };
-
 
     return (
-        <div>
-            <header className="header">
-                <h1>todos</h1>
-                <AddTodo onSubmit={onSubmit} />
-            </header>
+        <div className="todoapp">
             <TodoList onChangeStateFilter={setFilter} />
         </div>
     );

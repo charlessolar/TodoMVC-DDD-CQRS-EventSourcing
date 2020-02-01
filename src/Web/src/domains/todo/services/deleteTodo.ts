@@ -18,7 +18,7 @@ export const DeleteTodo = (todoId: string): [
     const isSent = useRef<boolean>(false);
     const doFetch = async () => {
         isSent.current = true;
-        await fetcher.post({ todoId });
+        await fetcher.delete({ todoId });
     };
 
     return [

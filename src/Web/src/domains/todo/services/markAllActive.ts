@@ -5,18 +5,18 @@ import { useRef } from 'react';
 
 const debug = Debug(FILENAME);
 
-export const MarkAllActive = (): [
+export const MarkAllActive = (todoIds: string[]): [
     boolean,
     boolean,
     boolean,
-    (todoIds: string[]) => Promise<void>
+    () => Promise<void>
 ] => {
     const fetcher = useFetch(
         { path: `/todo/mark_active`, method: 'POST' }
     );
 
     const isSent = useRef<boolean>(false);
-    const doFetch = async (todoIds: string[]) => {
+    const doFetch = async () => {
         isSent.current = true;
 
         const promises = todoIds.map(x => fetcher.post({ todoId: x }));

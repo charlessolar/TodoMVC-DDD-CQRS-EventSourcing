@@ -11,14 +11,14 @@ export const TodoToggling = (props: Props) => {
     const { activeTodoCount, todoIds } = props;
 
     // a clumsy attempt to encapsulate 2 services
-    const [processingComplete, loadingComplete, errorComplete, markComplete] = MarkAllComplete();
-    const [processingActive, loadingActive, errorActive, markActive] = MarkAllActive();
+    const [processingComplete, loadingComplete, errorComplete, markComplete] = MarkAllComplete(todoIds);
+    const [processingActive, loadingActive, errorActive, markActive] = MarkAllActive(todoIds);
 
     const toggleAll = (e: React.FormEvent) => {
         if ((e.target as any).checked) {
-            markComplete(todoIds);
+            markComplete();
         } else {
-            markActive(todoIds);
+            markActive();
         }
     }
 
@@ -35,7 +35,7 @@ export const TodoToggling = (props: Props) => {
                 htmlFor="toggle-all"
             >
                 Mark all as complete
-     </label>
+            </label>
         </Loading>
     );
 }

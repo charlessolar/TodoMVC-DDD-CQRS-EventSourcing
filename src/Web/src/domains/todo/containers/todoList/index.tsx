@@ -28,7 +28,7 @@ export const TodoList = (props: Props) => {
     const [processing, adding, failure, execute] = AddTodo();
 
     const shownTodos = todos.filter((todo) => {
-        switch (filterParams.stateFilter) {
+        switch (filterParams && filterParams.stateFilter) {
             case ACTIVE:
                 return todo.active;
             case COMPLETED:
@@ -57,9 +57,11 @@ export const TodoList = (props: Props) => {
     }
     const onDestroy = () => {
         // same above
+        refresh();
     }
     const onSave = () => {
         // edits a todo
+        refresh();
     }
     const onToggle = () => {
 
@@ -87,7 +89,7 @@ export const TodoList = (props: Props) => {
         <div>
             <Loading display={{ loading, error }}>
                 <header className="header">
-                    <h1>todos</h1>
+                    <h1>Todos</h1>
                     <input
                         className="new-todo"
                         placeholder="What needs to be done?"
@@ -100,7 +102,7 @@ export const TodoList = (props: Props) => {
                 {todos.length && <section className="main">
                     <TodoToggling activeTodoCount={activeTodoCount} todoIds={filtered.map(x => x.id)} />
                     <ul className="todo-list">
-                        <FilteredList todos={filtered} stateFilter={filterParams.stateFilter || ALL} onChangeStateFilter={onChangeStateFilter} onDestroy={onDestroy} onSave={onSave} onToggle={onToggle} />
+                        <FilteredList todos={filtered} stateFilter={filterParams && filterParams.stateFilter || ALL} onChangeStateFilter={onChangeStateFilter} onDestroy={onDestroy} onSave={onSave} onToggle={onToggle} />
                     </ul>
                 </section>
                 }
@@ -110,7 +112,7 @@ export const TodoList = (props: Props) => {
                     <TodoFooter
                         count={activeTodoCount}
                         completedCount={completedCount}
-                        shownFilter={filterParams.stateFilter}
+                        shownFilter={filterParams && filterParams.stateFilter}
                         onClearCompleted={() => onClearCompleted()}
                         onChangeFilter={onChangeStateFilter}
                     />
