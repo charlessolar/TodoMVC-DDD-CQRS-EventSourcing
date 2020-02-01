@@ -31,14 +31,14 @@ namespace Example.Controllers
             {
             });
         }
-        [HttpGet("[controller]/active")]
+        [HttpGet("/active")]
         public Task<Paged<Todo.Models.TodoResponse>> Active()
         {
             return _session.Request<Todo.Queries.ActiveTodos, Todo.Models.TodoResponse>(new Todo.Queries.ActiveTodos
             {
             });
         }
-        [HttpGet("[controller]/complete")]
+        [HttpGet("/complete")]
         public Task<Paged<Todo.Models.TodoResponse>> Complete()
         {
             return _session.Request<Todo.Queries.CompleteTodos, Todo.Models.TodoResponse>(new Todo.Queries.CompleteTodos
@@ -55,7 +55,7 @@ namespace Example.Controllers
                 Message = model.Message
             });
         }
-        [HttpPost("[controller]/edit")]
+        [HttpPost("/edit")]
         public Task Edit(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.Edit
@@ -72,7 +72,7 @@ namespace Example.Controllers
                 TodoId = model.TodoId,
             });
         }
-        [HttpPost("[controller]/mark_complete")]
+        [HttpPost("/mark_complete")]
         public Task Complete(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkComplete
@@ -80,7 +80,7 @@ namespace Example.Controllers
                 TodoId = model.TodoId,
             });
         }
-        [HttpPost("[controller]/mark_active")]
+        [HttpPost("/mark_active")]
         public Task Active(DTOs.Todo model)
         {
             return _session.CommandToDomain(new Todo.Commands.MarkActive

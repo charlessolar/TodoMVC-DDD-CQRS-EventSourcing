@@ -33,6 +33,23 @@ Being this project has such a small domain context there are only a couple sourc
 * [Read Model Projector](src/Application/Todo/Handler.cs)
 * [Web Request Handler](src/Presentation/Service.cs)
 
+### Outstanding issues
+
+* The first todo added won't show up right away.  Refreshing the page or adding another todo fixes it.  
+
+The first message sent through the whole system takes longer than all the others as NSB builds caches and does things in the background.  In a true system this is what is known as "eventually consistent."  The web app could fake adding the todo instead of submitting a new request to the web api to counter this.
+
+* Additional todo features like marking complete and deleting don't work
+
+Its a problem with the web api which I am unfamilar with.  DELETE just returns "unsupported media type" and google doesn't have an immediate solution.  After debugging DI containers for 2 days I lack the motivation to dive into this issue deeply at this moment.
+
+* TodoMVC's css sheets are not perfectly integrated 
+
+Mainly because I use material-ui and am used to a more "react" way of styling - they are mostly correct
+
+* Web App is a separate container instead of being included in the presentation container
+
+If the web app was returned via a GET from the asp net core endpoint we wouldn't have to worry about CORS or specifying the ip address of the host.  I debated setting it up that way but integrating a typescript build pipeline with webpack into the C# build process is not my favorite thing to do.  But it *could* happen and may be more ideal
 
 ### What is EventSourcing?
 
