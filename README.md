@@ -32,7 +32,6 @@ Being this project has such a small domain context there are only a couple sourc
 * [Domain Todo Aggregate](src/Domain/Todo/Todo.cs)
 * [Read Model Projector](src/Application/Todo/Handler.cs)
 * [Web Request Handler](src/Presentation/Controllers/TodoController.cs)
-
 * [Domain Handler Tests](src/Test/DomainHandler.cs)
 * [Event Handler Tests](src/Test/EventHandler.cs)
 
