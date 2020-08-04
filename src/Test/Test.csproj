@@ -7,19 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aggregates.NET.Testing" Version="0.15.36.892" />
-    <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.11.0" />
-    <PackageReference Include="AutoFixture.Xunit2" Version="4.11.0" />
+    <PackageReference Include="Aggregates.NET.Testing" Version="0.15.62.915" />
+    <PackageReference Include="AutoFixture" Version="4.13.0" />
+    <PackageReference Include="AutoFixture.AutoFakeItEasy" Version="4.13.0" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.13.0" />
     <PackageReference Include="FakeItEasy" Version="5.5.0" />
-    <PackageReference Include="FluentAssertions" Version="5.10.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.2.0">
+    <PackageReference Include="coverlet.collector" Version="1.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
