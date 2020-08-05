@@ -72,7 +72,7 @@ namespace Example
         }
         private static async Task<IEndpointInstance> InitBus()
         {
-            var config = new EndpointConfiguration("application");
+            var config = new EndpointConfiguration("application2");
 
             // Configure RabbitMQ transport
             var transport = config.UseTransport<RabbitMQTransport>();

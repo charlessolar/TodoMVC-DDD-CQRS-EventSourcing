@@ -82,7 +82,7 @@ namespace Infrastructure.Extensions
         public static async Task CommandToDomain<T>(this IMessageSession bus, T message) where T : StampedCommand
         {
             var options = new SendOptions();
-            options.SetDestination("domain");
+            options.SetDestination("domain2");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
             var response = bus.Request<Aggregates.Messages.IMessage>(message, options);
@@ -100,7 +100,7 @@ namespace Infrastructure.Extensions
         public static async Task<Responses.Paged<TResponse>> Request<T, TResponse>(this IMessageSession bus, T message) where T : Paged where TResponse : class
         {
             var options = new SendOptions();
-            options.SetDestination("application");
+            options.SetDestination("application2");
             options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
 
             var response = bus.Request<PagedReply>(message, options);

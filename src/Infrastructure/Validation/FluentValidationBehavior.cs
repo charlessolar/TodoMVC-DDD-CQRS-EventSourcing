@@ -34,8 +34,10 @@ namespace Infrastructure.Validation
                 .Select(type => factory.GetValidator(type))
                 .Where(validator => validator != null);
 
+            var validationContext = new ValidationContext<object>(context.Message.Instance);
+
             var validationResults = await validators
-                .SelectAsync(validator => validator.ValidateAsync(context.Message.Instance))
+                .SelectAsync(validator => validator.ValidateAsync(validationContext))
                 .ConfigureAwait(false);
 
             if (validationResults == null || !validationResults.Any())

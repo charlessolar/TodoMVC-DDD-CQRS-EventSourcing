@@ -27,7 +27,7 @@ namespace Presentation
                 options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-            var config = new EndpointConfiguration("presentation");
+            var config = new EndpointConfiguration("presentation2");
 
             // Configure RabbitMQ transport
             var transport = config.UseTransport<RabbitMQTransport>();
