@@ -25,6 +25,7 @@ namespace Application
 
         public Task Add<T>(Id id, T todo) where T : class
         {
+            //test
             _pending.Add((Operation.Add, todo));
             return Task.CompletedTask;
         }
