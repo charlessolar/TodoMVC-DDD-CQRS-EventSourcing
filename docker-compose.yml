@@ -20,24 +20,16 @@ services:
       - eventstore
     restart: always
   presentation:
-    image: todomvc/presentation:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Presentation/Dockerfile
-    depends_on:
-      - rabbitmq
-    ports:
-      - "8080:80"
-    restart: always
-  frontend:
-    image: todomvc/frontend:${TAG:-latest}
+    image: todomvc/web:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/Dockerfile
     depends_on:
-      - presentation
+      - rabbitmq
     ports:
-      - "80:80"
+      - "8080:80"
+      - "4443:443"
+    restart: always
   
   # windows image
   #rabbitmq:
@@ -53,7 +45,10 @@ services:
       - "15672:15672"
       - "5672:5672"
   eventstore:
-    image: eventstore/eventstore
+    image: eventstore/eventstore:latest
+    environment:
+      - EVENTSTORE_INSECURE=TRUE
+      - EVENTSTORE_RUN_PROJECTIONS=ALL
     ports:
       - "1113:1113"
       - "2113:2113"

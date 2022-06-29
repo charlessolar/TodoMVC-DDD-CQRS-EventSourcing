@@ -1,27 +1,24 @@
-FROM mhart/alpine-node as build
-
-RUN apk add --update --no-cache git
-RUN npm i -g yarn webpack-cli webpack cross-env
-
-WORKDIR /src
-
-COPY src/Web/package.json .
-COPY src/Web/yarn.lock .
-
-RUN yarn
-
-COPY .git .
-COPY src/Web .
-WORKDIR /src
-
-ARG API_SERVER
-ENV API_SERVER=${API_SERVER}
-
-RUN yarn build
-
-FROM nginx:stable as runtime
-
-COPY src/Web/nginx-site.conf /etc/nginx/conf.d/default.conf
-RUN mkdir /app
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
+ENV ASPNETCORE_URLS http://+
 WORKDIR /app
-COPY --from=build /src/dist .
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
+
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
+
+WORKDIR /src
+COPY ["/", "/"]
+RUN dotnet restore "Web/Web.csproj"
+WORKDIR /src/Web
+RUN dotnet build "Web.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Web.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Web.dll"]

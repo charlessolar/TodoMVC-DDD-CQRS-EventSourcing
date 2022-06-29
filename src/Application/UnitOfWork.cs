@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application
 {
-    public class UnitOfWork : Aggregates.UnitOfWork.IUnitOfWork, Aggregates.UnitOfWork.IGeneric
+    public class UnitOfWork : Aggregates.UnitOfWork.IApplicationUnitOfWork, Aggregates.UnitOfWork.IBaseUnitOfWork
     {
         private static ConcurrentDictionary<Guid, object> MemoryDB = new ConcurrentDictionary<Guid, object>();
 

@@ -1,4 +1,5 @@
 ﻿using Aggregates;
+using Aggregates.Application;
 using Application;
 using Infrastructure.Extensions;
 using Infrastructure.Queries;
@@ -24,26 +25,26 @@ namespace Example.Todo.Application
 
         public async Task Handle(Queries.AllTodos query, IMessageHandlerContext ctx)
         {
-            var results = ctx.App<UnitOfWork>().GetAll();
+            var results = ctx.Uow<UnitOfWork>().GetAll();
 
             await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
         public async Task Handle(Queries.ActiveTodos query, IMessageHandlerContext ctx)
         {
-            var results = ctx.App<UnitOfWork>().GetAll().Where(x => x.Active);
+            var results = ctx.Uow<UnitOfWork>().GetAll().Where(x => x.Active);
 
             await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
         public async Task Handle(Queries.CompleteTodos query, IMessageHandlerContext ctx)
         {
-            var results = ctx.App<UnitOfWork>().GetAll().Where(x => !x.Active);
+            var results = ctx.Uow<UnitOfWork>().GetAll().Where(x => !x.Active);
 
             await ctx.Result(results, results.Count(), 0).ConfigureAwait(false);
         }
 
         public async Task Handle(Events.Added e, IMessageHandlerContext ctx)
         {
-            await ctx.UoW().Add(e.TodoId, new Models.TodoResponse
+            await ctx.Uow().Add(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = e.Message,
@@ -52,9 +53,9 @@ namespace Example.Todo.Application
         }
         public async Task Handle(Events.Edited e, IMessageHandlerContext ctx)
         {
-            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
+            var existing = await ctx.Uow().Get<Models.TodoResponse>(e.TodoId);
 
-            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
+            await ctx.Uow().Update(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = e.Message,
@@ -63,15 +64,15 @@ namespace Example.Todo.Application
         }
         public async Task Handle(Events.Removed e, IMessageHandlerContext ctx)
         {
-            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
+            var existing = await ctx.Uow().Get<Models.TodoResponse>(e.TodoId);
 
-            await ctx.UoW().Delete<Models.TodoResponse>(e.TodoId).ConfigureAwait(false);
+            await ctx.Uow().Delete<Models.TodoResponse>(e.TodoId).ConfigureAwait(false);
         }
         public async Task Handle(Events.MarkedActive e, IMessageHandlerContext ctx)
         {
-            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
+            var existing = await ctx.Uow().Get<Models.TodoResponse>(e.TodoId);
 
-            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
+            await ctx.Uow().Update(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = existing.Message,
@@ -81,9 +82,9 @@ namespace Example.Todo.Application
 
         public async Task Handle(Events.MarkedComplete e, IMessageHandlerContext ctx)
         {
-            var existing = await ctx.UoW().Get<Models.TodoResponse>(e.TodoId);
+            var existing = await ctx.Uow().Get<Models.TodoResponse>(e.TodoId);
 
-            await ctx.UoW().Update(e.TodoId, new Models.TodoResponse
+            await ctx.Uow().Update(e.TodoId, new Models.TodoResponse
             {
                 Id = e.TodoId,
                 Message = existing.Message,

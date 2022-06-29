@@ -1,0 +1,84 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "http-proxy-middleware": "^0.19.1",
+    "jquery": "^3.6.0",
+    "merge": "^2.1.1",
+    "oidc-client": "^1.11.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "rimraf": "^2.6.2",
+    "web-vitals": "^0.2.4",
+    "workbox-background-sync": "^5.1.3",
+    "workbox-broadcast-update": "^5.1.3",
+    "workbox-cacheable-response": "^5.1.3",
+    "workbox-core": "^5.1.3",
+    "workbox-expiration": "^5.1.3",
+    "workbox-google-analytics": "^5.1.3",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-precaching": "^5.1.3",
+    "workbox-range-requests": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
+    "workbox-streams": "^5.1.3",
+    "classnames": "^2.3.1",
+    "prop-types": "^15.8.1",
+    "react-redux": "^8.0.0",
+    "react-router": "^6.3.0",
+    "redux": "^4.1.2",
+    "todomvc-app-css": "^2.4.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "ajv": "^6.9.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.25.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.7.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "nan": "^2.14.2",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/runtime": "^7.17.9",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "cypress": "^9.5.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "jest-extended": "^2.0.0",
+    "prettier": "^2.6.2",
+    "react-scripts": "^5.0.1",
+    "start-server-and-test": "^1.14.0"
+  },
+  "scripts": {
+    "prestart": "node aspnetcore-https && node aspnetcore-react",
+    "start": "rimraf ./build && react-scripts start",
+    "build": "cross-env CI=false react-scripts build",
+    "test": "npm run test:unit",
+    "test:unit": "react-scripts test --watchAll=false",
+    "test:e2e": "start-server-and-test start http://localhost:9300 cypress",
+    "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.{js,jsx}'"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

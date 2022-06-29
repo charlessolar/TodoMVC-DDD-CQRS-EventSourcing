@@ -1,0 +1,37 @@
+{
+  "plugins": ["prettier"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "extends": ["react-app"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "import/first": 0,
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0,
+    "object-curly-newline": ["error", { "consistent": true }],
+    "no-return-assign": 0,
+    "no-underscore-dangle": 0,
+    "react/jsx-filename-extension": 0,
+    "react/prefer-stateless-function": 0,
+    "react/forbid-prop-types": 0,
+    "react/destructuring-assignment": 0,
+    "react/state-in-constructor": 0,
+    "react/button-has-type": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/control-has-associated-label": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "max-len": ["error", { "code": 120 }],
+    "comma-dangle": ["error", "never"],
+    "arrow-parens": ["error", "as-needed"],
+    "react/react-in-jsx-scope": 0
+  }
+}
