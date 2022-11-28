@@ -1,6 +1,7 @@
 ﻿using Aggregates.Messages;
 using FluentValidation;
 using Infrastructure.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Pipeline;
 using Serilog;
 using System;
@@ -26,12 +27,14 @@ namespace Infrastructure.Validation
                 return;
             }
 
-            var factory = context.Builder.Build<IValidatorFactory>();
-
             var validators = GetBaseTypes(messageType).Concat(new[] { messageType })
                 .Where(type => typeof(IMessage).IsAssignableFrom(type))
                 .Where(type => type != typeof(IMessage))
-                .Select(type => factory.GetValidator(type))
+                .Select(type =>
+                {
+                    Type genericType = typeof(IValidator<>).MakeGenericType(type);
+                    return (IValidator)context.Builder.GetService(genericType);
+                })
                 .Where(validator => validator != null);
 
             var validationContext = new ValidationContext<object>(context.Message.Instance);

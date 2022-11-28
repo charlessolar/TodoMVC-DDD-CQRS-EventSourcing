@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aggregates.NET" Version="0.17.10.101" />
-    <PackageReference Include="FluentValidation" Version="11.1.0" />
+    <PackageReference Include="Aggregates.NET" Version="0.18.7.112" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
   </ItemGroup>
 
   <ItemGroup>

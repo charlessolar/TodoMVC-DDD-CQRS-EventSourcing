@@ -12,9 +12,8 @@ builder.Services.AddControllersWithViews();
 
 var endpointConfiguration = new EndpointConfiguration("Web");
 
-endpointConfiguration.UsePersistence<InMemoryPersistence>();
 var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
-transport.UseConventionalRoutingTopology();
+transport.UseConventionalRoutingTopology(QueueType.Classic);
 transport.ConnectionString(GetRabbitConnectionString(builder.Configuration));
 
 endpointConfiguration.Pipeline.Register(

@@ -2,7 +2,7 @@ version: '3.7'
 
 networks:
   default:
-      name: nat
+    name: nat
 services:
   domain:
     environment:
